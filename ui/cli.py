@@ -1,4 +1,7 @@
-#This is a main menu function to print
+#*Importing transaction 
+from services import transaction_manipulation
+
+#*main menu function to print
 def main_menu():
     print("----------Welcome to main menu----------")
     print("1. Add income")
@@ -12,7 +15,7 @@ def main_menu():
     print("9. Monthly Summary")
     print("10. Budgeting")
 
-#This is a function to print the categories so they know what to pick
+#*function to print the categories so they know what to pick
 def category_menu():
     print("""Which category is it?
 1. Food
@@ -27,7 +30,7 @@ def category_menu():
 10. Pets 
 11. Others""")
 
-# function to accept user input for income 
+#* function to accept user input for income 
 def user_input_income():
     transactions={}
     #Asking for date input
@@ -61,7 +64,8 @@ while True:
             print("Please pick a number between 1 - 10")
             continue
         if user_input == 1:
-            user_input_income()
+            transactions_dict = user_input_income()
+            transaction_manipulation.add_income(transactions_dict)
             break
         elif user_input == 2:
             pass
