@@ -1,4 +1,5 @@
-#importing csv and path 
+#importing csv and path
+from data import finance_data_v1
 import csv 
 from pathlib import Path
 
@@ -36,6 +37,11 @@ def write_data(transactions):
         fieldnames = ['date', 'type', 'category', 'amount', 'note', 'id']
         #Assigning data that will go to csv file to writer variable
         writer = csv.DictWriter(data, fieldnames=fieldnames)
+        #if the file doesn't exist or file size equals to 0 bytes then set to write_header to True
+        write_header = not finance_data_v1.exists() or finance_data_v1.stat().st_size == 0
+        #if write_header is True then go ahead and write header/fieldname but if write_header is False then don't run
+        if write_header:
+            writer.writeheader()
         #Write the header row based on fieldnames
         writer.writeheader()
         #Write multiple dictionary rows to the csv file
