@@ -16,21 +16,6 @@ def main_menu():
     print("10. Budgeting")
 
 #function to print the categories so they know what to pick
-def expense_category_menu():
-    print("""Which category is it?
-1. Food
-2. Transportation
-3. Communication
-4. Housing
-5. Personal Care
-6. Health and Wellness
-7. Education
-8. Entertainment
-9. Debt payments
-10. Pets 
-11. Others""")
-
-#function to print the categories so they know what to pick
 def income_category_menu():
     print("""Which category is it?
 1. Earned income (salary, wages, commision, etc)
@@ -60,8 +45,50 @@ def user_input_income():
                 break
         except ValueError:
             print("This value is invalid. Try again please")
-    transactions["amount"] = int(input("How much was spent?\n"))
+    transactions["amount"] = int(input("How much was the transaction?\n"))
     transactions["note"] = input("Any notes?\n")
+    return(transactions)
+
+#function to print the categories so they know what to pick
+def expense_category_menu():
+    print("""Which category is it?
+1. Food
+2. Transportation
+3. Communication
+4. Housing
+5. Personal Care
+6. Health and Wellness
+7. Education
+8. Entertainment
+9. Debt payments
+10. Pets 
+11. Others""")
+
+def user_input_expense():
+    transactions={}
+    #Asking for date input
+    transactions["date"] = input("What date is it?(yyyy/mm/dd)\n")
+    #Assigning type to expense automatically
+    transactions["type"] = "expense"
+    #Asking for category and validating it
+    while True:
+        expense_category_menu()
+        try:
+            user_input_expense_category = int(input("Which category is it?\n"))
+            if user_input_expense_category > 11 or user_input_expense_category <=0:
+                print("Please pick a valid number between 1 and 11")
+                continue
+            categories = {1:"Food", 2:"Transportation", 3:"Communication", 4:"Housing", 5:"Personal Care", 6:"Health and Wellness", 7:"Education", 8:"Entertainment", 9:"Debt payments", 10:"Pets", 11:"Others"}
+            if user_input_expense_category in categories:
+                transactions["category"] = categories[user_input_expense_category]
+                break
+        except ValueError:
+            print("This value is invalid. Try again please")
+    #Asking for amount input
+    transactions["amount"] = int(input("How much was spent?\n"))
+    #Asking for note input
+    transactions["note"] = input("Any notes?\n")
+    #Returning transactions dictionary
     return(transactions)
 
 def start():
@@ -73,12 +100,19 @@ def start():
                 print("Please pick a number between 1 - 10")
                 continue
             if user_input == 1:
+                #Transaction dict = to the transaction that was returned in user_input_income function
                 transactions_dict = user_input_income()
+                #sent as argument to transaction_manipulation
                 transaction_manipulation.add_income(transactions_dict)
-                print("Added task successfully")
+                print("Added transaction successfully")
                 break
             elif user_input == 2:
-                pass
+                #Transaction dict = to the transaction that was returned in user_input_expense function
+                transactions_dict = user_input_expense()
+                #sent as argument to transaction_manipulation
+                transaction_manipulation.add_expense(transactions_dict)
+                print("Added transaction successfully")
+                break
             elif user_input == 3:
                 pass
             elif user_input == 4:

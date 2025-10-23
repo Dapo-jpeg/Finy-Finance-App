@@ -24,7 +24,25 @@ def add_income(transactions_dict):
     #TODO: 3. Pass data to database.py
     database.write_data(transaction_data)
 #function to add expense
-def add_expense():
+def add_expense(transaction_dict):
+    #TODO: Generate unique uuid 
+    transaction_dict["id"] = str(uuid.uuid4())
+    #TODO: Validate and create object
+    # validating data
+    #* will do later
+    # Creating object
+    expense_object = transaction.expense_transaction(**transaction_dict)
+    # Converting object to dict before sending
+    transaction_data = {
+        "date": expense_object.date, 
+        "type": expense_object.type, 
+        "category": expense_object.category, 
+        "amount": expense_object.amount, 
+        "note": expense_object.note, 
+        "id": expense_object.id
+    }
+    #TODO: Pass data to database.py for writing
+    database.write_data(transaction_data)
     pass
 
 #function to update income 
