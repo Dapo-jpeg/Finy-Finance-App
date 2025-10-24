@@ -54,3 +54,5 @@ def add_expense(transaction_dict):
 #function to remove income 
 
 #function to remove expense
+
+#function for recurring expenses

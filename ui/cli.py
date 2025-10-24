@@ -1,5 +1,7 @@
 #Importing transaction 
 from services import transaction_manipulation
+from services import account_manipulation
+from services import analytics
 
 #main menu function to print
 def main_menu():
@@ -8,12 +10,13 @@ def main_menu():
     print("2. Add expense")
     print("3. Change transaction information")
     print("4. Remove income/expense")
-    print("5. Show account balance")
-    print("6. Show spendings percentage")
-    print("7. Show income sources percentage")
-    print("8. Recurring expenses")
-    print("9. Monthly Summary")
-    print("10. Budgeting")
+    print("5. Show bank account balance")
+    print("6. Bank account management")
+    print("7. Show spendings percentage")
+    print("8. Show income sources percentage")
+    print("9. Recurring expenses")
+    print("10. Monthly Summary")
+    print("11. Budgeting")
 
 #function to print the categories so they know what to pick
 def income_category_menu():
@@ -64,6 +67,7 @@ def expense_category_menu():
 10. Pets 
 11. Others""")
 
+#function to accept user input for expense
 def user_input_expense():
     transactions={}
     #Asking for date input
@@ -91,12 +95,72 @@ def user_input_expense():
     #Returning transactions dictionary
     return(transactions)
 
+#function to show bank account balance only 
+def bank_account_balance():
+    pass 
+
+#function to show the different bank accounts from account.csv for the user to pick
+def bank_account_topick():
+    pass
+    # calls read_bank_account function from account_manipulation.py
+    # prints out all accounts 
+    #//Working on this now
+    account_manipulation.read_bank_account()
+    # assign to dict
+    account_dict_topick = {
+        "bank_account_id" : account_manipulation.read_bank_account}
+    # create a variable called picked option
+
+    # ask user for input 
+    # match user input to the dict then update emapty variable called picked option with user input
+
+#function for bank account category for number 6
+def bank_account_menu():
+    print("Please pick an option")
+    print("1. Show bank account information")
+    print("2. Add new bank account")
+    print("3. Update bank account info")
+    print("4. Remove bank account")
+
+#function for bank account manipulation for number 6
+def bank_account_manipulation():
+    bank_account_menu()
+    user_input = int(input("Pick a number please"))
+    if user_input <=0 or user_input > 4:
+        print("Please pick a number between 1-4")
+    #if user picks 1 
+    if user_input == 1:
+        #call function add_bank_account from account_manipulation.py
+        #TODO: working on this now
+        account_manipulation.add_bank_account
+    #elif user picks 2
+    elif user_input == 2:
+        #call function to ask which bank account 
+        bank_account_topick()
+        user_input_2 = int(input("Pick a number please"))
+        #if user picks (number)
+        if user_input_2 == 1:
+            #call show_account_info from analytics.py
+            pass
+    #elif user picks 3
+        #call function to ask which bank account
+            #if user picks (number)
+                #call show_account_info from analytics.py
+                    #ask user which part they want to update
+                        #if user picks (number)
+                        #call function from account_manipulation.py to allow changing that part
+    # elif user picks 4
+        #call function to ask which bank account
+            #if user picks(number)
+                #call remove_bank_account from account_manipulation.py
+    pass
+
 def start():
     while True:  
         try: 
             main_menu()
             user_input = int(input("Pick a number please\n"))
-            if user_input <=0 or user_input> 10:
+            if user_input <=0 or user_input> 11:
                 print("Please pick a number between 1 - 10")
                 continue
             if user_input == 1:
@@ -128,6 +192,8 @@ def start():
             elif user_input == 9:
                 pass
             elif user_input == 10:
+                pass
+            elif user_input == 11:
                 pass
         #This code is not working
         except ValueError:

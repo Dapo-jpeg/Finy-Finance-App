@@ -1,7 +1,7 @@
 date,type,category,amount,note,id
-2025/10/21,Income,Others,5000,from parents,10d2d9de-bd1b-4420-8de8-673a28b0e99f
-2025/10/21,Income,"Earned income (salary, wages, commision, etc)",125000,Commissions,f171d4e8-e6ac-4bd9-9886-2d48ea192b5e
+2025/10/21,income,Others,5000,from parents,10d2d9de-bd1b-4420-8de8-673a28b0e99f
+2025/10/21,income,"Earned income (salary, wages, commision, etc)",125000,Commissions,f171d4e8-e6ac-4bd9-9886-2d48ea192b5e
 date,type,category,amount,note,id
-2025/10/23,Income,Others,5000,From parents,434977c7-b657-48f4-a13f-0dac76ad2a1a
+2025/10/23,income,Others,5000,From parents,434977c7-b657-48f4-a13f-0dac76ad2a1a
 date,type,category,amount,note,id
-2025/10/23,Expense,Food,3000,Bread,46c361e0-a28a-494e-96a1-fd107affe338
+2025/10/23,expense,Food,3000,Bread,46c361e0-a28a-494e-96a1-fd107affe338

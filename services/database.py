@@ -23,9 +23,6 @@ def read_data():
         for row in reader:
             transactions.append(row)
     print(transactions)
-    
-    #Skips the first line which is the field name
-    #next(reader)
 
 #function to write to csv file 
 def write_data(transactions):
