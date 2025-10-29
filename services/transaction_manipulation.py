@@ -79,7 +79,26 @@ def update_transaction(transaction_id, field_to_change, new_value):
     #Writing updated version back to csv
     database.write_data(transactions, overwrite=True)
 
-#function to remove income 
+#function to remove 
+def remove_transaction(transaction_id):
+    #Getting all transactions
+    transactions = database.read_data()
 
-#function to remove expense:
-    pass
+    #Find the transaction by ID
+    for transaction in transactions:
+        if transaction["id"] == transaction_id:
+            print("Transaction found, deleting...")
+
+    #Filter out the one with the transaction_id and create new list of transactions
+    updated_transactions = []
+    for transaction in transactions:
+        if transaction["id"] != transaction_id:
+            updated_transactions.append(transaction)
+
+    #Check if the ID was actually found and removed if not the transaction didn't exist in the first place
+    if len(updated_transactions) == len(transactions):
+        print("No transaction was found with that ID")
+        return
+    
+    # Sending it to be rewrited 
+    database.write_data(updated_transactions, overwrite=True)

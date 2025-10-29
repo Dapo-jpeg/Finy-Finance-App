@@ -9,7 +9,7 @@ def main_menu():
     print("1. Add income")
     print("2. Add expense")
     print("3. Change transaction information")
-    print("4. Remove income/expense")
+    print("4. Remove transaction")
     print("5. Show bank account balance")
     print("6. Bank account management")
     print("7. Show spendings percentage")
@@ -180,6 +180,33 @@ def change_transaction_info():
     #Sending all the collected informatino for transaction_manipulation to handle. 
     transaction_manipulation.update_transaction(selected_transaction['id'], field_to_change, new_value)
 
+def remove_transaction():
+    print("Here are all your transactions")
+    print("Date | Category | Amount | Note")
+
+    #Read transactions
+    transactions_list = transaction_manipulation.print_all_transactions()
+    #Display transactions in a numbered list 
+    for i, transaction in enumerate(transactions_list):
+        print(f"{i+1}. {transaction['date']} | {transaction['category']} | {transaction['amount']} | {transaction['note']}")
+
+    #Ask the user which transaction they want to change
+    selected_number = int(input("Enter the number of the transaction you want to change: "))
+
+    #Get the selected transaction based on user input 
+    selected_transaction = transactions_list[selected_number - 1]
+
+    #Confirming with user if they want to delete
+    user_confirmation = input(f"Are you sure you want to delete ({selected_transaction["date"]} | {selected_transaction["category"]} | {selected_transaction["amount"]} | {transaction['note']})? (yes/no)\n").lower()
+    if user_confirmation == "yes":
+        #Sending it to transaction_manipulation to delete the selected transaction 
+        transaction_manipulation.remove_transaction(selected_transaction['id'])
+    elif user_confirmation == "no":
+        print("Action cancelled")
+    else:
+        ValueError
+        print("Confirmation not recognized... Action cancelled")
+
 
 def start():
     while True:  
@@ -208,7 +235,9 @@ def start():
                 print("Updated Transaction successfully")
                 break
             elif user_input == 4:
-                pass
+                remove_transaction()
+                print("Transaction removed successfully")
+                break
             elif user_input == 5:
                 pass
             elif user_input == 6:
