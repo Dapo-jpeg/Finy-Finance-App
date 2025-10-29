@@ -4,8 +4,9 @@ from pathlib import Path
 
 #assigning the csv to a variable
 data_file = Path("data/finance_data_v1.csv")
+account_data_file = Path("data/account.csv")
 
-#function to read the csv file 
+#function to read the transaction csv file 
 def read_data():
     
     #Making a list of dict called transactions
@@ -24,7 +25,7 @@ def read_data():
             transactions.append(row)
     return(transactions)
 
-#function to write to csv file 
+#function to write to transaction csv file 
 def write_data(transactions, overwrite=False):
     
     #Giving fieldnames 
@@ -50,10 +51,36 @@ def write_data(transactions, overwrite=False):
             #Write append dictionary row to the csv file
             writer.writerow(transactions)
 
-#function to update value in csv file
-def update_data():
-    pass
+#function to read account.csv
+def read_bank_account():
+    #making a list of dict called accounts
+    accounts = []
+    #if there is no data found then print no accounts currently
+    if not account_data_file.exists():
+        print("No bank accounts currently")
+        return accounts
+    #Open csv to read
+    with open(account_data_file, 'r', newline='', encoding= 'utf-8') as data:
+        # assign the all files that are being read to reader
+        reader = csv.DictReader(data)
+        
+        #iterate reading each line 
+        for row in reader:
+            accounts.append(row)
+    return(accounts)
 
-#function to remove from csv file
-def remove_data():
-    pass
+def write_bank_account(accounts):
+    #Giving fieldnames
+    fieldnames = ['bank_account_id', 'name', 'currency', 'balance', 'account-type', 'starting_balance', 'note']
+    
+    #open csv file to write to 
+    with open(account_data_file, 'a', newline='', encoding='utf-8') as account_data:
+        writer = csv.DictWriter(account_data, fieldnames=fieldnames)
+
+        #Not repeat writing header fields
+        write_header = not account_data_file.exists() or account_data_file.stat().st_size == 0
+        if write_header:
+            writer.writeheader()
+        
+        #Write to append dictionary row to the csv file
+        writer.writerow(accounts)

@@ -95,9 +95,62 @@ def user_input_expense():
     #Returning transactions dictionary
     return(transactions)
 
+def change_transaction_info():
+    print("Here are all your transactions")
+    print("Date | Category | Amount | Note")
+    #Read transactions
+    transactions_list = transaction_manipulation.print_all_transactions()
+    #Display transactions in a numbered list 
+    for i, transaction in enumerate(transactions_list):
+        print(f"{i+1}. {transaction['date']} | {transaction['category']} | {transaction['amount']} | {transaction['note']}")
+
+    #Ask the user which transaction they want to change
+    selected_number = int(input("Enter the number of the transaction you want to change: "))
+
+    #Get the selected transaction based on user input 
+    selected_transaction = transactions_list[selected_number - 1]
+
+    #Ask the user which field they want to change and making it lower case
+    print("What field do you want to change (date/category/amount/note)")
+    field_to_change = input("Field name: ").lower()
+
+    #Ask what the new value they want to change it to 
+    new_value = input("Enter new value: ")
+
+    #Sending all the collected informatino for transaction_manipulation to handle. 
+    transaction_manipulation.update_transaction(selected_transaction['id'], field_to_change, new_value)
+
+def remove_transaction():
+    print("Here are all your transactions")
+    print("Date | Category | Amount | Note")
+
+    #Read transactions
+    transactions_list = transaction_manipulation.print_all_transactions()
+    #Display transactions in a numbered list 
+    for i, transaction in enumerate(transactions_list):
+        print(f"{i+1}. {transaction['date']} | {transaction['category']} | {transaction['amount']} | {transaction['note']}")
+
+    #Ask the user which transaction they want to change
+    selected_number = int(input("Enter the number of the transaction you want to change: "))
+
+    #Get the selected transaction based on user input 
+    selected_transaction = transactions_list[selected_number - 1]
+
+    #Confirming with user if they want to delete
+    user_confirmation = input(f"Are you sure you want to delete ({selected_transaction["date"]} | {selected_transaction["category"]} | {selected_transaction["amount"]} | {transaction['note']})? (yes/no)\n").lower()
+    if user_confirmation == "yes":
+        #Sending it to transaction_manipulation to delete the selected transaction 
+        transaction_manipulation.remove_transaction(selected_transaction['id'])
+    elif user_confirmation == "no":
+        print("Action cancelled")
+    else:
+        ValueError
+        print("Confirmation not recognized... Action cancelled")
+
+
 #function to show bank account balance only 
 def bank_account_balance():
-    pass 
+    analytics.show_bank_balance()
 
 #function to show the different bank accounts from account.csv for the user to pick
 def bank_account_topick():
@@ -155,57 +208,7 @@ def bank_account_manipulation():
                 #call remove_bank_account from account_manipulation.py
     pass
 
-def change_transaction_info():
-    print("Here are all your transactions")
-    print("Date | Category | Amount | Note")
-    #Read transactions
-    transactions_list = transaction_manipulation.print_all_transactions()
-    #Display transactions in a numbered list 
-    for i, transaction in enumerate(transactions_list):
-        print(f"{i+1}. {transaction['date']} | {transaction['category']} | {transaction['amount']} | {transaction['note']}")
 
-    #Ask the user which transaction they want to change
-    selected_number = int(input("Enter the number of the transaction you want to change: "))
-
-    #Get the selected transaction based on user input 
-    selected_transaction = transactions_list[selected_number - 1]
-
-    #Ask the user which field they want to change and making it lower case
-    print("What field do you want to change (date/category/amount/note)")
-    field_to_change = input("Field name: ").lower()
-
-    #Ask what the new value they want to change it to 
-    new_value = input("Enter new value: ")
-
-    #Sending all the collected informatino for transaction_manipulation to handle. 
-    transaction_manipulation.update_transaction(selected_transaction['id'], field_to_change, new_value)
-
-def remove_transaction():
-    print("Here are all your transactions")
-    print("Date | Category | Amount | Note")
-
-    #Read transactions
-    transactions_list = transaction_manipulation.print_all_transactions()
-    #Display transactions in a numbered list 
-    for i, transaction in enumerate(transactions_list):
-        print(f"{i+1}. {transaction['date']} | {transaction['category']} | {transaction['amount']} | {transaction['note']}")
-
-    #Ask the user which transaction they want to change
-    selected_number = int(input("Enter the number of the transaction you want to change: "))
-
-    #Get the selected transaction based on user input 
-    selected_transaction = transactions_list[selected_number - 1]
-
-    #Confirming with user if they want to delete
-    user_confirmation = input(f"Are you sure you want to delete ({selected_transaction["date"]} | {selected_transaction["category"]} | {selected_transaction["amount"]} | {transaction['note']})? (yes/no)\n").lower()
-    if user_confirmation == "yes":
-        #Sending it to transaction_manipulation to delete the selected transaction 
-        transaction_manipulation.remove_transaction(selected_transaction['id'])
-    elif user_confirmation == "no":
-        print("Action cancelled")
-    else:
-        ValueError
-        print("Confirmation not recognized... Action cancelled")
 
 
 def start():
@@ -239,7 +242,8 @@ def start():
                 print("Transaction removed successfully")
                 break
             elif user_input == 5:
-                pass
+                bank_account_balance()
+                break
             elif user_input == 6:
                 pass
             elif user_input == 7:
