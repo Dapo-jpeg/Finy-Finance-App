@@ -91,6 +91,32 @@ def user_input_expense():
     #Returning transactions dictionary
     return(transactions)
 
+def change_transaction_info():
+    print("Here are all your transactions")
+    print("Date | Category | Amount | Note")
+    #Read transactions
+    transactions_list = transaction_manipulation.print_all_transactions()
+    #Display transactions in a numbered list 
+    for i, transaction in enumerate(transactions_list):
+        print(f"{i+1}. {transaction['date']} | {transaction['category']} | {transaction['amount']} | {transaction['note']}")
+
+    #Ask the user which transaction they want to change
+    selected_number = int(input("Enter the number of the transaction you want to change: "))
+
+    #Get the selected transaction based on user input 
+    selected_transaction = transactions_list[selected_number - 1]
+
+    #Ask the user which field they want to change and making it lower case
+    print("What field do you want to change (date/category/amount/note)")
+    field_to_change = input("Field name: ").lower()
+
+    #Ask what the new value they want to change it to 
+    new_value = input("Enter new value: ")
+
+    #Sending all the collected informatino for transaction_manipulation to handle. 
+    transaction_manipulation.update_transaction(selected_transaction['id'], field_to_change, new_value)
+
+
 def start():
     while True:  
         try: 
@@ -114,7 +140,9 @@ def start():
                 print("Added transaction successfully")
                 break
             elif user_input == 3:
-                pass
+                change_transaction_info()
+                print("Updated Transaction successfully")
+                break
             elif user_input == 4:
                 pass
             elif user_input == 5:

@@ -23,6 +23,7 @@ def add_income(transactions_dict):
     }
     #TODO: 3. Pass data to database.py
     database.write_data(transaction_data)
+
 #function to add expense
 def add_expense(transaction_dict):
     #TODO: Generate unique uuid 
@@ -45,12 +46,40 @@ def add_expense(transaction_dict):
     database.write_data(transaction_data)
     pass
 
-#function to update income 
+#function to print out all transactions
+def print_all_transactions():
+    return database.read_data()
 
 
 #function to update expense 
+def update_transaction(transaction_id, field_to_change, new_value):
+    #Getting all transactions
+    transactions = database.read_data()
 
+    #Find the transaction by ID
+    for transaction in transactions:
+        if transaction["id"] == transaction_id:
+            print("Transaction found, updating...")
+
+            #Validating field_to_change and new_value
+            if field_to_change not in ["date", "category", "amount", "note"]:
+                print("Invalid field name")
+                return
+            
+            if field_to_change == "amount":
+                #then convert to integer and make it sure its greater than 0
+                if int(new_value) <= 0:
+                    print("Invalid value. Amount must be greater than 0")
+                    return
+            
+            #Update transaction
+            transaction[field_to_change] = new_value
+            break
+
+    #Writing updated version back to csv
+    database.write_data(transactions, overwrite=True)
 
 #function to remove income 
 
-#function to remove expense
+#function to remove expense:
+    pass
