@@ -22,28 +22,35 @@ def read_data():
         #Iterate and read out each line in the csv file
         for row in reader:
             transactions.append(row)
-    print(transactions)
+    return(transactions)
 
 #function to write to csv file 
-def write_data(transactions):
+def write_data(transactions, overwrite=False):
+    
+    #Giving fieldnames 
+    fieldnames = ['date', 'type', 'category', 'amount', 'note', 'id']
+    mode = 'w' if overwrite else 'a'
     
     #Opens csv file to write to
-    with open(data_file, 'a',newline='', encoding='utf-8') as data:
-        #Giving fieldnames 
-        fieldnames = ['date', 'type', 'category', 'amount', 'note', 'id']
+    with open(data_file, mode ,newline='', encoding='utf-8') as data:
         #Assigning data that will go to csv file to writer variable
         writer = csv.DictWriter(data, fieldnames=fieldnames)
+        
         #if the file doesn't exist or file size equals to 0 bytes then set to write_header to True
         write_header = not data_file.exists() or data_file.stat().st_size == 0
         #if write_header is True then go ahead and write header/fieldname but if write_header is False then don't run
-        if write_header:
+        if write_header or overwrite:
             writer.writeheader()
-        #Write the header row based on fieldnames
-        writer.writeheader()
-        #Write multiple dictionary rows to the csv file
-        writer.writerow(transactions)
+        
+        #If overwrite= True then completely overwrite file else just append row
+        if overwrite:
+            #Write multiple rows
+            writer.writerows(transactions)
+        else:       
+            #Write append dictionary row to the csv file
+            writer.writerow(transactions)
 
-#function to update value in csv file 
+#function to update value in csv file
 def update_data():
     pass
 
