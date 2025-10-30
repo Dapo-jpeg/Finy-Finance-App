@@ -42,13 +42,23 @@ def user_input_income():
             if user_input_category <= 0 or user_input_category >4:
                 print("Please pick a valid number")
                 continue
-            categories = {1:"Earned income (salary, wages, commision, etc)", 2:"Investment income (stocks, bonds, crypto, etc)", 3:"Passive income(digital products, rentals, royalties, etc)", 4:"Others"}
+            categories = {
+                1:"Earned income (salary, wages, commision, etc)",
+                2:"Investment income (stocks, bonds, crypto, etc)",
+                3:"Passive income(digital products, rentals, royalties, etc)", 
+                4:"Others"}
             if user_input_category in categories:
                 transactions["category"] = categories[user_input_category]
                 break
         except ValueError:
-            print("This value is invalid. Try again please")
-    transactions["amount"] = int(input("How much was the transaction?\n"))
+            print("This value is invalid. Try again please!")
+    
+    while True:
+        try:
+            transactions["amount"] = int(input("How much was the transaction?\n"))
+            break
+        except ValueError:
+            print("Please enter a valid number for amount")
     transactions["note"] = input("Any notes?\n")
     return(transactions)
 
@@ -152,23 +162,8 @@ def remove_transaction():
 def bank_account_balance():
     analytics.show_bank_balance()
 
-#function to show the different bank accounts from account.csv for the user to pick
-def bank_account_topick():
-    pass
-    # calls read_bank_account function from account_manipulation.py
-    # prints out all accounts 
-    #//Working on this now
-    account_manipulation.read_bank_account()
-    # assign to dict
-    account_dict_topick = {
-        "bank_account_id" : account_manipulation.read_bank_account}
-    # create a variable called picked option
-
-    # ask user for input 
-    # match user input to the dict then update emapty variable called picked option with user input
-
 #function for bank account category for number 6
-def bank_account_menu():
+def bank_account_CRUD_menu():
     print("Please pick an option")
     print("1. Show bank account information")
     print("2. Add new bank account")
@@ -177,36 +172,55 @@ def bank_account_menu():
 
 #function for bank account manipulation for number 6
 def bank_account_manipulation():
-    bank_account_menu()
-    user_input = int(input("Pick a number please"))
-    if user_input <=0 or user_input > 4:
+    bank_account_CRUD_menu()
+
+    #Ask user for input
+    user_input_number = int(input("Pick a number please\n"))
+
+    #Validate user input
+    if user_input_number <=0 or user_input_number > 4:
         print("Please pick a number between 1-4")
-    #if user picks 1 
-    if user_input == 1:
-        #call function add_bank_account from account_manipulation.py
-        #TODO: working on this now
-        account_manipulation.add_bank_account
-    #elif user picks 2
-    elif user_input == 2:
-        #call function to ask which bank account 
-        bank_account_topick()
-        user_input_2 = int(input("Pick a number please"))
-        #if user picks (number)
-        if user_input_2 == 1:
-            #call show_account_info from analytics.py
-            pass
-    #elif user picks 3
-        #call function to ask which bank account
-            #if user picks (number)
-                #call show_account_info from analytics.py
-                    #ask user which part they want to update
-                        #if user picks (number)
-                        #call function from account_manipulation.py to allow changing that part
-    # elif user picks 4
-        #call function to ask which bank account
-            #if user picks(number)
-                #call remove_bank_account from account_manipulation.py
-    pass
+
+    #if user picks 1 show all bank account info
+    if user_input_number == 1:
+        analytics.show_all_account_info()
+
+    #if user picks 2 call add bank account function in account manipulation 
+    elif user_input_number == 2:
+        account_input={}
+
+        account_input['name'] = input("What is the name of the bank account?\n")
+
+        currency_input = input("Currency is set to NGN. Do you want to change it?(yes/no)\n").lower()
+        if currency_input == "yes":
+            account_input["currency"] = input("Which currency (Use 3 letter abbreviation)")
+        elif currency_input == "no":
+            account_input['currency'] = "NGN"
+        elif ValueError:
+            print("Invalid input. Please type yes or no")
+        
+        account_input['balance'] = ''
+        account_input['account_type'] = input("What is the account type? (Examples = Checking, Savings, Joint account, etc)\n").lower()
+
+        account_input['starting_balance'] = int(input("What is the starting balance for this account?\n"))
+
+        note_input = input("Any account note? (yes/no)\n").lower()
+        if note_input == "yes":
+            account_input['note'] = input("Please type your note\n")
+        elif note_input == "no":
+            account_input['note'] = ''
+        elif ValueError:
+            print("Invalid input. Please type yes or no")
+
+        account_manipulation.add_bank_account(account_input)
+        print("Account added successfully")
+    elif user_input_number == 3:
+        pass
+    elif user_input_number == 4:
+        pass
+    elif ValueError:
+        print("Please type a number between 1 and 4")
+
 
 
 
@@ -216,9 +230,11 @@ def start():
         try: 
             main_menu()
             user_input = int(input("Pick a number please\n"))
+
             if user_input <=0 or user_input> 11:
                 print("Please pick a number between 1 - 10")
                 continue
+            
             if user_input == 1:
                 #Transaction dict = to the transaction that was returned in user_input_income function
                 transactions_dict = user_input_income()
@@ -245,7 +261,8 @@ def start():
                 bank_account_balance()
                 break
             elif user_input == 6:
-                pass
+                bank_account_manipulation()
+                break
             elif user_input == 7:
                 pass
             elif user_input == 8:
@@ -256,6 +273,6 @@ def start():
                 pass
             elif user_input == 11:
                 pass
-        #This code is not working
+        #if they type anything else then print invalid input
         except ValueError:
             print("Invalid input. Please try again")

@@ -16,6 +16,22 @@ def show_bank_balance():
     for index, account in enumerate(accounts):
         print(f"{index + 1}. {account['name']} | {account['currency']} | {account['balance']}")
 
+def show_all_account_info():
+    #read all accounts and store them in accounts
+    accounts = database.read_bank_account()
+
+    #if account empty tell user there are no accounts
+    if not accounts:
+        print("No accounts found. Please create one")
+        return
+    
+    #Showing the accounts & balnces to user 
+    print("ID | Account name | Currency | Balance | Account Type | Starting Balance | Note")
+    print("--------------------------------------")
+    for index, account in enumerate(accounts):
+        print(f"{index + 1}. {account['name']} | {account['currency']} | {account['balance']} | {account['account_type']} | {account['starting_balance']} | {account['note']}")
+
+
 
 #function showing categorical incomes
 

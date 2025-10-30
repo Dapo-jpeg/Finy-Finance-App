@@ -69,18 +69,20 @@ def read_bank_account():
             accounts.append(row)
     return(accounts)
 
-def write_bank_account(accounts):
+def write_bank_account(account_input_data, overwrite=False):
     #Giving fieldnames
-    fieldnames = ['bank_account_id', 'name', 'currency', 'balance', 'account-type', 'starting_balance', 'note']
-    
+    fieldnames = ['name', 'currency', 'balance', 'account_type', 'starting_balance', 'note', 'bank_account_id']
+    mode = 'w' if overwrite else 'a'
+
     #open csv file to write to 
-    with open(account_data_file, 'a', newline='', encoding='utf-8') as account_data:
+    with open(account_data_file, mode, newline='', encoding='utf-8') as account_data:
         writer = csv.DictWriter(account_data, fieldnames=fieldnames)
 
         #Not repeat writing header fields
         write_header = not account_data_file.exists() or account_data_file.stat().st_size == 0
         if write_header:
             writer.writeheader()
-        
+
         #Write to append dictionary row to the csv file
-        writer.writerow(accounts)
+        writer.writerow(account_input_data)
+

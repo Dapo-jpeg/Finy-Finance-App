@@ -7,6 +7,7 @@ import uuid
 def add_income(transactions_dict):
     #TODO: 1. Generate unique id using uuid
     transactions_dict["id"] = str(uuid.uuid4())
+
     #TODO: 2. Validate and create object
     # Validating object
     #* Will do later
@@ -21,6 +22,7 @@ def add_income(transactions_dict):
         "note": income_object.note, 
         "id": income_object.id
     }
+    
     #TODO: 3. Pass data to database.py
     database.write_data(transaction_data)
 
