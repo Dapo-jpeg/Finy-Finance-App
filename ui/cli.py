@@ -141,7 +141,7 @@ def remove_transaction():
         print(f"{i+1}. {transaction['date']} | {transaction['category']} | {transaction['amount']} | {transaction['note']}")
 
     #Ask the user which transaction they want to change
-    selected_number = int(input("Enter the number of the transaction you want to change: "))
+    selected_number = int(input("Enter the number of the transaction you want to remove: "))
 
     #Get the selected transaction based on user input 
     selected_transaction = transactions_list[selected_number - 1]
@@ -156,6 +156,7 @@ def remove_transaction():
     else:
         ValueError
         print("Confirmation not recognized... Action cancelled")
+
 
 
 #function to show bank account balance only 
@@ -214,10 +215,76 @@ def bank_account_manipulation():
 
         account_manipulation.add_bank_account(account_input)
         print("Account added successfully")
+    
+    #if user picks 3, allow them to update it. 
     elif user_input_number == 3:
-        pass
+        print("Here are your all bank account information")
+        print("Account name | Currency | Account type | Starting balance | Note")
+
+        account_list = account_manipulation.print_all_account()
+        
+        for index, account in enumerate(account_list):
+            print(f"{index + 1}. {account['name']} | {account['currency']} | {account['account_type']} | {account['starting_balance']} | {account['note']}")
+
+        selected_number = int(input("Enter the number of the account details you want to change: "))
+
+        selected_account = account_list[selected_number - 1]
+
+        while True:
+            try: 
+                print("What field do you want to change")
+                print("1. Account name")
+                print("2. Currency")
+                print("3. Account Type")
+                print("4. Starting balance")
+                print("5. Note")
+
+                fields = {
+                    1:"name",
+                    2:"currency",
+                    3:"account_type",
+                    4:"starting_balance",
+                    5:"note"
+                    }
+                user_change_field = int(input("Number: "))
+                if user_change_field in fields:
+                    field_to_change = fields[user_change_field]
+                    break
+            except ValueError:
+                print("This value is invalid. Try again please")
+
+
+        new_value = input("Enter new value: ")
+
+        account_manipulation.update_account(selected_account['bank_account_id'], field_to_change, new_value)
+
+        print("Account details successfully updated")
+    
     elif user_input_number == 4:
-        pass
+        print("Here are all your accounts")
+        print("Account name | Currency | Account type | Starting balance | Note")
+
+        account_list = account_manipulation.print_all_account()
+
+        for index, account in enumerate(account_list):
+            print(f"{index + 1}. {account['name']} | {account['currency']} | {account['account_type']} | {account['starting_balance']} | {account['note']}")
+
+        selected_number = int(input("Enter the number of the account you want to delete\n"))
+
+        selected_account = account_list[selected_number - 1]
+
+        user_confirmation = input(f"Are you sure you want to delete ({selected_account['name']} | {selected_account['currency']} | {selected_account['account_type']} | {selected_account['starting_balance']} | {selected_account['note']})? (yes/no)\n").lower()
+        if user_confirmation == "yes":
+            account_manipulation.remove_account(selected_account['bank_account_id'])
+        elif user_confirmation == "no":
+            print("Action cancelled")
+        else:
+            ValueError
+            print("Confirmation not recognized... Action cancelled")
+
+        print("Account successfully deleted")
+
+
     elif ValueError:
         print("Please type a number between 1 and 4")
 

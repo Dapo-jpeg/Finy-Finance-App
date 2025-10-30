@@ -80,9 +80,12 @@ def write_bank_account(account_input_data, overwrite=False):
 
         #Not repeat writing header fields
         write_header = not account_data_file.exists() or account_data_file.stat().st_size == 0
-        if write_header:
+        if write_header or overwrite:
             writer.writeheader()
 
         #Write to append dictionary row to the csv file
-        writer.writerow(account_input_data)
+        if overwrite:
+            writer.writerows(account_input_data)
+        else:
+            writer.writerow(account_input_data)
 
