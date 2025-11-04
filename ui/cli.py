@@ -38,7 +38,7 @@ def user_input_income():
         #Showing which categories there are
         income_category_menu()
         try:
-            user_input_category = int(input("Which Category is it\n"))
+            user_input_category = int(input("Please pick a number\n"))
             if user_input_category <= 0 or user_input_category >4:
                 print("Please pick a valid number")
                 continue
@@ -53,6 +53,28 @@ def user_input_income():
         except ValueError:
             print("This value is invalid. Try again please!")
     
+    while True:
+        #showing which bank accounts to pick
+        account_list = account_manipulation.print_all_account()
+        if not account_list:
+            print("No account found. Please create one first")
+            break
+        try:
+            for index, account in enumerate(account_list):
+                print(f"{index + 1}. {account['name']} | {account['balance']}")
+                continue
+
+            user_input_account = int(input("Which account do you want to use\n"))
+
+            selected_account = account_list[user_input_account - 1]
+
+            transactions["bank_account_id"] = selected_account["bank_account_id"]
+            break
+
+        except ValueError:
+            print("Invalid input. Try again please.")
+
+
     while True:
         try:
             transactions["amount"] = int(input("How much was the transaction?\n"))
@@ -98,6 +120,28 @@ def user_input_expense():
                 break
         except ValueError:
             print("This value is invalid. Try again please")
+
+    while True:
+        #showing which bank accounts to pick
+        account_list = account_manipulation.print_all_account()
+        if not account_list:
+            print("No account found. Please create one first")
+            break
+        try:
+            for index, account in enumerate(account_list):
+                print(f"{index + 1}. {account['name']} | {account['balance']}")
+                continue
+
+            user_input_account = int(input("Which account do you want to use\n"))
+
+            selected_account = account_list[user_input_account - 1]
+
+            transactions["bank_account_id"] = selected_account
+            break
+
+        except ValueError:
+            print("Invalid input. Try again please.")
+
     #Asking for amount input
     transactions["amount"] = int(input("How much was spent?\n"))
     #Asking for note input

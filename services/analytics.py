@@ -1,5 +1,20 @@
 from services import database
 
+#calculate bank balance 
+def calculate_account_balance(bank_account_id):
+    #read all accounts
+    accounts = database.read_bank_account()
+
+    #filter to get transactions with bank_account_id
+    
+    #sum of all expense transactions
+
+    #sum of all income transactions
+
+    #balance = income sum - expense sum + starting balance
+
+    pass
+
 #function showing bank account balance
 def show_bank_balance():
     #read all accounts and store them in accounts
