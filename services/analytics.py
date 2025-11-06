@@ -55,10 +55,21 @@ def update_all_account_balance():
     if not all_accounts or len(all_accounts) == 0:
         print("There are no bank accounts")
         return
+    
+    #Creating list to add all accounts to
+    updated_accounts = []
+
     #iterate and calculate the balance of each bank account
     for each_account in all_accounts:
         bank_account_id = each_account["bank_account_id"]
-        calculate_account_balance(bank_account_id, overwrite=True)
+        new_balance = calculate_account_balance(bank_account_id)
+
+        #Add the recently calculated account to the list
+        each_account['bank_account_id'] = str(new_balance)
+        updated_accounts.append(each_account)
+
+    #Write the whole new list to the csv file
+    calculate_account_balance(bank_account_id, overwrite=True)
 
 #function showing bank account balance
 def show_bank_balance():
