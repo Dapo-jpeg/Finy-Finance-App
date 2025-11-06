@@ -74,7 +74,6 @@ def user_input_income():
         except ValueError:
             print("Invalid input. Try again please.")
 
-
     while True:
         try:
             transactions["amount"] = int(input("How much was the transaction?\n"))
@@ -82,6 +81,7 @@ def user_input_income():
         except ValueError:
             print("Please enter a valid number for amount")
     transactions["note"] = input("Any notes?\n")
+
     return(transactions)
 
 #function to print the categories so they know what to pick
@@ -174,6 +174,9 @@ def change_transaction_info():
     #Sending all the collected informatino for transaction_manipulation to handle. 
     transaction_manipulation.update_transaction(selected_transaction['id'], field_to_change, new_value)
 
+    #Updating the bank account balance
+    analytics.calculate_account_balance(selected_transaction['bank_account_id'], overwrite=True)
+
 def remove_transaction():
     print("Here are all your transactions")
     print("Date | Category | Amount | Note")
@@ -200,6 +203,9 @@ def remove_transaction():
     else:
         ValueError
         print("Confirmation not recognized... Action cancelled")
+
+    #Updating the bank account balance
+    analytics.calculate_account_balance(selected_transaction['bank_account_id'], overwrite=True)
 
 
 
@@ -303,6 +309,9 @@ def bank_account_manipulation():
         account_manipulation.update_account(selected_account['bank_account_id'], field_to_change, new_value)
 
         print("Account details successfully updated")
+
+        #Update the bank account balance
+        analytics.calculate_account_balance(selected_account["bank_account_id"], overwrite=True)
     
     elif user_input_number == 4:
         print("Here are all your accounts")
@@ -328,6 +337,8 @@ def bank_account_manipulation():
 
         print("Account successfully deleted")
 
+        #Update the bank account balance
+        analytics.calculate_account_balance(selected_account["bank_account_id"], overwrite=True)
 
     elif ValueError:
         print("Please type a number between 1 and 4")
@@ -352,6 +363,8 @@ def start():
                 #sent as argument to transaction_manipulation
                 transaction_manipulation.add_income(transactions_dict)
                 print("Added transaction successfully")
+                #Recalculate balance for only that account and rewrites 
+                analytics.calculate_account_balance(transactions_dict['bank_account_id'], overwrite=True)
                 break
             elif user_input == 2:
                 #Transaction dict = to the transaction that was returned in user_input_expense function
@@ -359,6 +372,8 @@ def start():
                 #sent as argument to transaction_manipulation
                 transaction_manipulation.add_expense(transactions_dict)
                 print("Added transaction successfully")
+                #Recalculate balance for only that account and rewrites 
+                analytics.calculate_account_balance(transactions_dict['bank_account_id'], overwrite=True)
                 break
             elif user_input == 3:
                 change_transaction_info()

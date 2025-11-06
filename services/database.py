@@ -29,7 +29,7 @@ def read_data():
 def write_data(transactions, overwrite=False):
     
     #Giving fieldnames 
-    fieldnames = ['date', 'type', 'category', 'amount', 'note', 'id']
+    fieldnames = ['date', 'type', 'category', 'amount', 'note', 'bank_account_id', 'id']
     mode = 'w' if overwrite else 'a'
     
     #Opens csv file to write to

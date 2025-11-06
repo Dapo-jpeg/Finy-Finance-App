@@ -1,6 +1,2 @@
-date,type,category,amount,note,id
-2025/10/29,Income,Others,5000,From parents,34afc6c8-f1b7-47e8-bc09-c78750f96fde
-2025/10/29,Expense,Food,1200,Bread,d9b777bb-f8aa-497d-997b-d8ed026f436e
-2025/10/29,Expense,Transportation,600,Basketball run,2da5060c-db2f-4741-bcfb-0059558e8f0b
-2025/10/29,Expense,Others,200,giving offering,e7fcba6c-dc1d-4020-9d67-264fc361426a
-2025/11/04,income,"Earned income (salary, wages, commision, etc)",10000,From parents,a07f7fbf-2ac1-4266-9d4a-db696f0aeb1c
+date,type,category,amount,note,bank_account_id,id
+2025/11/06,income,"Earned income (salary, wages, commision, etc)",2000,From parents,29215dd4-f113-41cd-ac48-10b3833cc09b,ea2f7aee-866f-4da3-9456-0f8cb78fdee5

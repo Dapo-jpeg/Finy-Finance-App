@@ -32,7 +32,7 @@ def update_account(bank_account_id, field_to_change, new_value):
 
     for account in accounts:
         if account['bank_account_id'] == bank_account_id:
-            print("Transaction found, updating...")
+            print("Account confirmed, updating...")
 
             if field_to_change not in ["name", "currency", "account_type", "starting_balance", "note"]:
                 print("Invalid field name")

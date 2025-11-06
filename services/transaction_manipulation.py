@@ -20,6 +20,7 @@ def add_income(transactions_dict):
         "category": income_object.category,
         "amount": income_object.amount, 
         "note": income_object.note, 
+        "bank_account_id": income_object.bank_account_id,
         "id": income_object.id
     }
     
@@ -42,6 +43,7 @@ def add_expense(transaction_dict):
         "category": expense_object.category, 
         "amount": expense_object.amount, 
         "note": expense_object.note, 
+        "bank_account_id" : expense_object.bank_account_id,
         "id": expense_object.id
     }
     #TODO: Pass data to database.py for writing
