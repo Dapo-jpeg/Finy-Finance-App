@@ -12,9 +12,9 @@ def main_menu():
     print("4. Remove transaction")
     print("5. Show bank account balance")
     print("6. Bank account management")
-    print("7. Show spendings percentage")
-    print("8. Show income sources percentage")
-    print("9. Recurring expenses")
+    print("7. Recurring expenses")
+    print("8. Show spendings percentage")
+    print("9. Show income sources percentage")
     print("10. Monthly Summary")
     print("11. Budgeting")
 
