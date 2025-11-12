@@ -33,3 +33,8 @@ class income_transaction(transaction):
         super().__init__(date, type, category, amount, note, bank_account_id, id)
         # Change the type to income
         self.type = "income"
+
+class recurring_transaction(transaction):
+    def __init__(self, date, type, category, amount, frequency,  note, bank_account_id, id):
+        super().__init__(date, type, category, amount, note, bank_account_id, id)
+        self.frequency = frequency

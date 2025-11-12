@@ -5,6 +5,7 @@ from pathlib import Path
 #assigning the csv to a variable
 data_file = Path("data/finance_data_v1.csv")
 account_data_file = Path("data/account.csv")
+recurring_expenses_data = Path("data/recurring_expenses.csv")
 
 #function to read the transaction csv file 
 def read_data():
@@ -51,6 +52,7 @@ def write_data(transactions, overwrite=False):
             #Write append dictionary row to the csv file
             writer.writerow(transactions)
 
+
 #function to read account.csv
 def read_bank_account():
     #making a list of dict called accounts
@@ -89,3 +91,38 @@ def write_bank_account(account_input_data, overwrite=False):
         else:
             writer.writerow(account_input_data)
 
+
+#function to read recurring_expenses.csv
+def read_recurring_expenses():
+    recurring_expenses = []
+
+    if not recurring_expenses_data.exists():
+        print("There are no recurring expenses")
+        return recurring_expenses
+    
+    with open(recurring_expenses_data, 'r', newline= '', encoding='utf-8') as recurring_expenses_file:
+        reader = csv.DictReader(recurring_expenses_file)
+
+        for row in reader:
+            recurring_expenses.append(row)
+    return (recurring_expenses)
+
+def write_recurring(recurring_data, overwrite=False):
+
+    mode = "w" if overwrite else "a"
+
+    fieldnames = ['date', 'type', 'category', 'amount', 'frequency', 'note', 'bank_account_id', 'id']
+
+    with open(recurring_expenses_data, mode, newline="", encoding="utf-8") as recurring_expenses_file:
+        writer = csv.DictWriter(recurring_expenses_file, fieldnames=fieldnames)
+
+        write_header =  not recurring_expenses_data.exists() or recurring_expenses_data.stat().st_size == 0
+
+        if write_header or overwrite :
+            writer.writeheader()
+
+        if overwrite:
+            writer.writerows(recurring_data)
+        else:
+            writer.writerow(recurring_data)
+            

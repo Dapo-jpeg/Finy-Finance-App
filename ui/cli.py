@@ -2,6 +2,7 @@
 from services import transaction_manipulation
 from services import account_manipulation
 from services import analytics
+from services import recurring_manipulation
 
 #main menu function to print
 def main_menu():
@@ -106,6 +107,7 @@ def user_input_expense():
     transactions["date"] = input("What date is it?(yyyy/mm/dd)\n")
     #Assigning type to expense automatically
     transactions["type"] = "expense"
+
     #Asking for category and validating it
     while True:
         expense_category_menu()
@@ -121,6 +123,7 @@ def user_input_expense():
         except ValueError:
             print("This value is invalid. Try again please")
 
+    #Picking bank account
     while True:
         #showing which bank accounts to pick
         account_list = account_manipulation.print_all_account()
@@ -136,7 +139,7 @@ def user_input_expense():
 
             selected_account = account_list[user_input_account - 1]
 
-            transactions["bank_account_id"] = selected_account
+            transactions["bank_account_id"] = selected_account["bank_account_id"]
             break
 
         except ValueError:
@@ -144,6 +147,28 @@ def user_input_expense():
 
     #Asking for amount input
     transactions["amount"] = int(input("How much was spent?\n"))
+
+    #asking if it is recurring 
+    try:
+        recurring_confirmation = input("Is this a recurring expense? (yes/no)\n").lower()
+    except ValueError:
+        print("Please type yes or no")
+
+    #Getting frequency of thing
+    if recurring_confirmation == "yes":
+        while True:
+            transactions["frequency"] = input("How frequent (daily, weekly, monthly, yearly)\n").lower()
+            options = ["daily", "weekly", "monthly", "yearly"]
+            if transactions["frequency"] not in options:
+                print("Please type a valid input (daily, weekly, monthly, yearly) \n")
+            else: 
+                break
+
+    elif recurring_confirmation == "no":
+        pass
+    else:
+        print("Please type yes or no")
+
     #Asking for note input
     transactions["note"] = input("Any notes?\n")
     #Returning transactions dictionary
@@ -226,7 +251,10 @@ def bank_account_manipulation():
     bank_account_CRUD_menu()
 
     #Ask user for input
-    user_input_number = int(input("Pick a number please\n"))
+    try:
+        user_input_number = int(input("Pick a number please\n"))
+    except ValueError:
+        print("Please pick a number between 1-4")
 
     #Validate user input
     if user_input_number <=0 or user_input_number > 4:
@@ -344,7 +372,36 @@ def bank_account_manipulation():
         print("Please type a number between 1 and 4")
 
 
+def recurring_expenses():
+    print("Please pick an option")
+    print("1. Show all recurring expenses")
+    print("2. Add a recurring expense")
+    print("3. Update a recurring expense")
+    print("4. Delete a recurring expense")
 
+    try:
+        user_input_recurring = int(input("Please pick a number between 1-4\n"))
+    except ValueError:
+        print("Please type a number between 1-4")
+
+    if user_input_recurring <=0 or user_input_recurring > 4:
+        print("Please type a number between 1-4")
+
+    if user_input_recurring == 1:
+        recurring_manipulation.show_recurring_expenses()
+
+    if user_input_recurring == 2:
+        #calling expense function
+        transaction_dict = user_input_expense()
+        #duplicating dictionary and removing frequency part
+        expense_dict = transaction_dict.copy()
+        del expense_dict['frequency']
+        #sending different dictionaries to write to different csv
+        transaction_manipulation.add_expense(expense_dict)
+        recurring_manipulation.add_recurring(transaction_dict)
+        pass
+
+    pass
 
 
 def start():
@@ -390,7 +447,8 @@ def start():
                 bank_account_manipulation()
                 break
             elif user_input == 7:
-                pass
+                recurring_expenses()
+                break
             elif user_input == 8:
                 pass
             elif user_input == 9:

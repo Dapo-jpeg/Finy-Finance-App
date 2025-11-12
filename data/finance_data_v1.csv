@@ -1,2 +1,2 @@
 date,type,category,amount,note,bank_account_id,id
-2025/11/06,income,"Earned income (salary, wages, commision, etc)",2000,From parents,29215dd4-f113-41cd-ac48-10b3833cc09b,ea2f7aee-866f-4da3-9456-0f8cb78fdee5
+2025/11/05,expense,Education,100,test 1,29215dd4-f113-41cd-ac48-10b3833cc09b,f4782c55-ac6a-441f-bd24-34b321349e01
