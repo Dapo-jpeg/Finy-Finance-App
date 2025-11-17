@@ -154,8 +154,11 @@ def user_input_expense():
     except ValueError:
         print("Please type yes or no")
 
-    #Getting frequency of thing
+    #Getting extra info
     if recurring_confirmation == "yes":
+        # Ask for a name for the subscription
+        transactions["name"] = input("What do you want to name this recurring transaction? \n")
+        # Asking for frequency
         while True:
             transactions["frequency"] = input("How frequent (daily, weekly, monthly, yearly)\n").lower()
             options = ["daily", "weekly", "monthly", "yearly"]
@@ -163,7 +166,6 @@ def user_input_expense():
                 print("Please type a valid input (daily, weekly, monthly, yearly) \n")
             else: 
                 break
-
     elif recurring_confirmation == "no":
         pass
     else:
@@ -396,9 +398,11 @@ def recurring_expenses():
         #duplicating dictionary and removing frequency part
         expense_dict = transaction_dict.copy()
         del expense_dict['frequency']
+        del expense_dict['name']
         #sending different dictionaries to write to different csv
         transaction_manipulation.add_expense(expense_dict)
         recurring_manipulation.add_recurring(transaction_dict)
+        analytics.calculate_account_balance(transaction_dict['bank_account_id'], overwrite=True)
         pass
 
     pass

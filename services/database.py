@@ -111,7 +111,7 @@ def write_recurring(recurring_data, overwrite=False):
 
     mode = "w" if overwrite else "a"
 
-    fieldnames = ['date', 'type', 'category', 'amount', 'frequency', 'note', 'bank_account_id', 'id']
+    fieldnames = ['name', 'date', 'type', 'category', 'amount', 'frequency', 'note', 'bank_account_id', 'id']
 
     with open(recurring_expenses_data, mode, newline="", encoding="utf-8") as recurring_expenses_file:
         writer = csv.DictWriter(recurring_expenses_file, fieldnames=fieldnames)
