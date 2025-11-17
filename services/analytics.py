@@ -6,10 +6,12 @@ def calculate_account_balance(bank_account_id, overwrite=False):
     transactions = database.read_data()
     accounts = database.read_bank_account()
 
+    #say there are no account if no accounts found
     if not accounts or len(accounts) == 0 :
         print("There are no bank accounts")
         return
 
+    #say there are no transactions found
     if not transactions or len(transactions) == 0 :
         print("There are no transactions with this bank account.")
         return
@@ -23,8 +25,9 @@ def calculate_account_balance(bank_account_id, overwrite=False):
     #Get starting balance from account
     starting_balance = 0
     for account in accounts:
-        if account['bank_account_id'] == bank_account_id:
+        if bank_account_id == account['bank_account_id']:
             starting_balance = float(account['starting_balance'])
+            break
 
     #sum of all expense transactions and sum of all income transactions
     expense_sum = 0
@@ -65,7 +68,7 @@ def update_all_account_balance():
         new_balance = calculate_account_balance(bank_account_id)
 
         #Add the recently calculated account to the list
-        each_account['bank_account_id'] = str(new_balance)
+        each_account['balance'] = str(new_balance)
         updated_accounts.append(each_account)
 
     #Write the whole new list to the csv file

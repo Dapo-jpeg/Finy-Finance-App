@@ -198,7 +198,7 @@ def remove_transaction():
     selected_transaction = transactions_list[selected_number - 1]
 
     #Confirming with user if they want to delete
-    user_confirmation = input(f"Are you sure you want to delete ({selected_transaction["date"]} | {selected_transaction["category"]} | {selected_transaction["amount"]} | {transaction['note']})? (yes/no)\n").lower()
+    user_confirmation = input(f"Are you sure you want to delete ({selected_transaction["date"]} | {selected_transaction["category"]} | {selected_transaction["amount"]} | {selected_transaction['note']})? (yes/no)\n").lower()
     if user_confirmation == "yes":
         #Sending it to transaction_manipulation to delete the selected transaction 
         transaction_manipulation.remove_transaction(selected_transaction['id'])
@@ -390,9 +390,50 @@ def recurring_expenses():
         transaction_manipulation.add_expense(expense_dict)
         recurring_manipulation.add_recurring(transaction_dict)
         analytics.calculate_account_balance(transaction_dict['bank_account_id'], overwrite=True)
-        pass
 
-    pass
+    #update a recurring expense
+    if user_input_recurring == 3:
+        print("Here are all the recurring expenses")
+        recurring_list = recurring_manipulation.show_recurring_expenses()
+
+        #Ask the user which recurring expense they want to change
+        selected_number = int(input("Enter the number of the recurring expense you want to change: "))
+
+        selected_recurring = recurring_list[selected_number - 1]
+
+        print("What field do you want to change (name, date, amount, frequency, category, note)")
+        field_to_change = input("Field name: ").lower()
+
+        new_value = input("Enter new value: ")
+
+        #sending all info to recurring_manipulation to handle
+        recurring_manipulation.update_recurring_expenses(selected_recurring["id"], field_to_change, new_value)
+
+        print("Successfully updated expenses")
+
+        #update the bank account balance
+        analytics.calculate_account_balance(selected_recurring['bank_account_id'], overwrite=True)
+    
+    if user_input_recurring == 4:
+        print("Here are all the recurring expenses")
+        recurring_list = recurring_manipulation.show_recurring_expenses()
+
+        #Ask the user which recurring expense they want to change
+        selected_number = int(input("Enter the number of the recurring expense you want to change: "))
+
+        selected_recurring = recurring_list[selected_number - 1]
+
+        user_confirmation = input(f"Are you sure you want to delete ({selected_recurring["name"]} | {selected_recurring["date"]} | {selected_recurring["category"]} | {selected_recurring["frequency"]} | {selected_recurring["amount"]} | {selected_recurring['note']})? (yes/no) \n").lower()
+
+        if user_confirmation == "yes":
+            # Send data to recurring manipulation
+            recurring_manipulation.remove_recurring_expense(selected_recurring["id"])
+            print("Successfully removed expense")
+        elif user_confirmation == "no":
+            print("Action cancelled")
+        else :
+            ValueError
+            print ("Confirmation not recognized... Action cancelled")
 
 
 def start():

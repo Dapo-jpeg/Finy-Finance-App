@@ -1,3 +1,3 @@
 name,currency,balance,account_type,starting_balance,note,bank_account_id
-Access Bank,NGN,5000.0,savings,3000,,29215dd4-f113-41cd-ac48-10b3833cc09b
-Ecobank,USD,-1600.0,savings,10,,0c6e8a05-3bfe-4a72-bd5c-2128e8420eba
+Access Bank,NGN,1800.0,savings,3000,,29215dd4-f113-41cd-ac48-10b3833cc09b
+Ecobank,USD,16800.0,savings,10,,0c6e8a05-3bfe-4a72-bd5c-2128e8420eba
