@@ -1,3 +1,4 @@
 name,date,type,category,amount,frequency,note,bank_account_id,id
 Daily bread,2025/11/06,expense,Food,1000,daily,no,29215dd4-f113-41cd-ac48-10b3833cc09b,76b5b65b-639f-4e6d-8634-c3b1cb5e923b
 Course,2025/11/06,expense,Education,1000,monthly,no,29215dd4-f113-41cd-ac48-10b3833cc09b,2af9d9dd-3243-43a1-a283-469862f3f2bb
+Transportation stuff,2025/11/06,expense,Transportation,500,weekly,Test 3,29215dd4-f113-41cd-ac48-10b3833cc09b,4535e8c7-a18a-4fb9-8072-17e7d879a16d

@@ -4,3 +4,4 @@ date,type,category,amount,note,bank_account_id,id
 2025/11/06,expense,Food,1000,no,29215dd4-f113-41cd-ac48-10b3833cc09b,addbd045-e2dc-42af-b313-dd9da321c42c
 2025/11/06,expense,Education,1000,no,29215dd4-f113-41cd-ac48-10b3833cc09b,e3eeb667-238b-4024-8611-dfec3802cbd6
 2025/11/06,expense,Pets,1000,no,29215dd4-f113-41cd-ac48-10b3833cc09b,299288a5-c636-41d3-b9aa-75572f6df523
+2025/11/06,expense,Transportation,500,Test 3,29215dd4-f113-41cd-ac48-10b3833cc09b,f99dddc0-053d-4cdc-801f-8d3a49036577

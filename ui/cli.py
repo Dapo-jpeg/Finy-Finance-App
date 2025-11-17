@@ -148,29 +148,6 @@ def user_input_expense():
     #Asking for amount input
     transactions["amount"] = int(input("How much was spent?\n"))
 
-    #asking if it is recurring 
-    try:
-        recurring_confirmation = input("Is this a recurring expense? (yes/no)\n").lower()
-    except ValueError:
-        print("Please type yes or no")
-
-    #Getting extra info
-    if recurring_confirmation == "yes":
-        # Ask for a name for the subscription
-        transactions["name"] = input("What do you want to name this recurring transaction? \n")
-        # Asking for frequency
-        while True:
-            transactions["frequency"] = input("How frequent (daily, weekly, monthly, yearly)\n").lower()
-            options = ["daily", "weekly", "monthly", "yearly"]
-            if transactions["frequency"] not in options:
-                print("Please type a valid input (daily, weekly, monthly, yearly) \n")
-            else: 
-                break
-    elif recurring_confirmation == "no":
-        pass
-    else:
-        print("Please type yes or no")
-
     #Asking for note input
     transactions["note"] = input("Any notes?\n")
     #Returning transactions dictionary
@@ -397,8 +374,18 @@ def recurring_expenses():
         transaction_dict = user_input_expense()
         #duplicating dictionary and removing frequency part
         expense_dict = transaction_dict.copy()
-        del expense_dict['frequency']
-        del expense_dict['name']
+
+        # Ask for a name for the subscription
+        transaction_dict["name"] = input("What do you want to name this recurring transaction? \n")
+        # Asking for frequency
+        while True:
+            transaction_dict["frequency"] = input("How frequent (daily, weekly, monthly, yearly)\n").lower()
+            options = ["daily", "weekly", "monthly", "yearly"]
+            if transaction_dict["frequency"] not in options:
+                print("Please type a valid input (daily, weekly, monthly, yearly) \n")
+            else: 
+                break
+
         #sending different dictionaries to write to different csv
         transaction_manipulation.add_expense(expense_dict)
         recurring_manipulation.add_recurring(transaction_dict)
