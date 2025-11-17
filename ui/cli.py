@@ -434,7 +434,7 @@ def recurring_expenses():
         else :
             ValueError
             print ("Confirmation not recognized... Action cancelled")
-
+#! I have to make another function that constantly checks the date so it can call up the recurring expense again (I will do this after switching my database to SQL)
 
 def start():
     while True:  
