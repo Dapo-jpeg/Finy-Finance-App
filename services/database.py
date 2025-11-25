@@ -98,9 +98,6 @@ def fetch_many_bank_accounts():
         connection.close()
 
 
-def fetch_one_transaction():
-    pass
-
 def fetch_many_transactions():
     connection = get_connection()
     cursor = connection.cursor()
@@ -122,8 +119,6 @@ def fetch_many_transactions():
     
     pass
 
-def fetch_one_recurring_expense():
-    pass
 
 def fetch_many_recurring_expenses():
     connection = get_connection()
