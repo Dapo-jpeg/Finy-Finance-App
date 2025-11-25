@@ -102,6 +102,24 @@ def fetch_one_transaction():
     pass
 
 def fetch_many_transactions():
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    query = "SELECT * FROM transactions"
+
+    try: 
+        rows = cursor.execute(query).fetchall()
+        connection.commit()
+
+        column_names = [description[0] for description in cursor.description]
+        result_dict = [dict(zip(column_names, row)) for row in rows]
+        return result_dict
+    except Exception as e:
+        print(e)
+    finally:
+        connection.close()
+
+    
     pass
 
 def fetch_one_recurring_expense():
@@ -125,10 +143,20 @@ def insert_bank_account(values):
         print(e)
     finally:
         connection.close()
-    pass
 
-def insert_transaction():
-    pass
+def insert_transaction(values):
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    query = "INSERT INTO transactions VALUES (:id, :date, :type, :category, :amount, :note, :bank_account_id)"
+
+    try:
+        cursor.execute(query, (values))
+        connection.commit()
+    except Exception as e :
+        print(e)
+    finally:
+        connection.close()
 
 def insert_many_transactions():
     #* will do later as a feature
@@ -156,8 +184,19 @@ def update_bank_account(values):
     finally:
         connection.close()
 
-def update_transaction():
-    pass
+def update_transaction(values):
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    query = "UPDATE transactions SET date= :date, type= :type, category= :category, amount= :amount, note= :note, bank_account_id= :bank_account_id WHERE id= :id"
+
+    try:
+        cursor.execute(query, (values))
+        connection.commit()
+    except Exception as e:
+        print(e)
+    finally:
+        connection.close()
 
 def update_recurring_expense():
     pass
@@ -174,16 +213,24 @@ def delete_bank_account(bank_account_id):
     try:
         cursor.execute(query, (bank_account_id,))
         connection.commit()
-        pass
     except Exception as e:
         print(e)
     finally:
         connection.close()
 
-    pass
+def delete_transaction(transaction_id):
+    connection = get_connection()
+    cursor = connection.cursor()
 
-def delete_transaction():
-    pass
+    query= "DELETE FROM transactions WHERE id = ?"
+
+    try: 
+        cursor.execute(query, (transaction_id,))
+        connection.commit()
+    except Exception as e:
+        print(e)
+    finally:
+        connection.close()
 
 def delete_recurring_expense():
     pass

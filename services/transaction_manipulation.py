@@ -25,7 +25,7 @@ def add_income(transactions_dict):
     }
     
     #TODO: 3. Pass data to database.py
-    database.write_data(transaction_data)
+    database.insert_transaction(transaction_data)
 
 #function to add expense
 def add_expense(transaction_dict):
@@ -47,18 +47,18 @@ def add_expense(transaction_dict):
         "id": expense_object.id
     }
     #TODO: Pass data to database.py for writing
-    database.write_data(transaction_data)
+    database.insert_transaction(transaction_data)
     pass
 
 #function to print out all transactions
 def print_all_transactions():
-    return database.read_data()
+    return database.fetch_many_transactions()
 
 
 #function to update expense 
 def update_transaction(transaction_id, field_to_change, new_value):
     #Getting all transactions
-    transactions = database.read_data()
+    transactions = database.fetch_many_transactions()
 
     #Find the transaction by ID
     for transaction in transactions:
@@ -78,31 +78,18 @@ def update_transaction(transaction_id, field_to_change, new_value):
             
             #Update transaction
             transaction[field_to_change] = new_value
+            database.update_transaction(transaction)
             break
-
-    #Writing updated version back to csv
-    database.write_data(transactions, overwrite=True)
 
 #function to remove 
 def remove_transaction(transaction_id):
     #Getting all transactions
-    transactions = database.read_data()
+    transactions = database.fetch_many_transactions()
 
     #Find the transaction by ID
     for transaction in transactions:
         if transaction["id"] == transaction_id:
             print("Transaction found, deleting...")
 
-    #Filter out the one with the transaction_id and create new list of transactions
-    updated_transactions = []
-    for transaction in transactions:
-        if transaction["id"] != transaction_id:
-            updated_transactions.append(transaction)
-
-    #Check if the ID was actually found and removed if not the transaction didn't exist in the first place
-    if len(updated_transactions) == len(transactions):
-        print("No transaction was found with that ID")
-        return
-    
     # Sending it to be rewrited 
-    database.write_data(updated_transactions, overwrite=True)
+    database.delete_transaction(transaction_id)
