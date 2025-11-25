@@ -3,7 +3,7 @@ import sqlite3
 #Initializing database
 def get_connection():
     try:
-        connection = sqlite3.connect("finy.db")
+        connection = sqlite3.connect("data/finy.db")
         connection.execute("PRAGMA foreign_keys = ON;")
         return connection
     except Exception as e:
