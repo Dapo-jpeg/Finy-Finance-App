@@ -6,7 +6,7 @@ import uuid
 
 # Function for reading all recurring expenses
 def show_recurring_expenses():
-    recurring_expenses = database.read_recurring_expenses()
+    recurring_expenses = database.fetch_many_recurring_expenses()
 
     if not recurring_expenses:
         print("There are no recurring expenses")
@@ -38,19 +38,14 @@ def add_recurring(transaction_dict):
         "id": recurring_object.id
     }
 
-    database.write_recurring(recurring_data)
+    database.insert_recurring_expense(recurring_data)
 
 def update_recurring_expenses(expense_id, field_to_change, new_value):
-    all_recurring_expenses = database.read_recurring_expenses()
+    all_recurring_expenses = database.fetch_many_recurring_expenses()
 
     if not all_recurring_expenses:
         print("There are no recurring expenses")
         return
-
-    print("Name | Amount | Category | Frequency | Date Paid | Bank Account")
-    print("--------------------------------------")
-    for index, expense in enumerate(all_recurring_expenses):
-        print(f"{index + 1}. {expense['name']} | {expense['amount']} | {expense['category']} | {expense['frequency']} | {expense['date']} | {expense['bank_account_id']}")
 
     for expense in all_recurring_expenses:
         if expense["id"] == expense_id:
@@ -68,34 +63,19 @@ def update_recurring_expenses(expense_id, field_to_change, new_value):
             
             #update expense
             expense[field_to_change] = new_value
+            database.update_recurring_expense(expense)
             break
-    
-    database.write_recurring(all_recurring_expenses, overwrite=True)
 
 def remove_recurring_expense(expense_id):
-    all_recurring_expenses = database.read_recurring_expenses()
+    all_recurring_expenses = database.fetch_many_recurring_expenses()
 
     if not all_recurring_expenses:
         print("There are no recurring expenses")
         return
 
-    print("Name | Amount | Category | Frequency | Date Paid | Bank Account")
-    print("--------------------------------------")
-    for index, expense in enumerate(all_recurring_expenses):
-        print(f"{index + 1}. {expense['name']} | {expense['amount']} | {expense['category']} | {expense['frequency']} | {expense['date']} | {expense['bank_account_id']}")
-
     for expense in all_recurring_expenses:
         if expense["id"] == expense_id:
             print("Transaction found, updating...")
-
-    updated_recurring_expenses = []
-    for expense in all_recurring_expenses:
-        if expense["id"] != expense_id:
-            updated_recurring_expenses.append(expense)
-
-    if len(updated_recurring_expenses) == len(all_recurring_expenses):
-        print("No expense found with that ID")
-        return
     
     # sending it to be rewritten
-    database.write_recurring(updated_recurring_expenses, overwrite=True)
+    database.delete_recurring_expense(expense_id)

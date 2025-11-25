@@ -392,11 +392,12 @@ def recurring_expenses():
                 print("Please type a valid input (daily, weekly, monthly, yearly) \n")
             else: 
                 break
-
+        
+        print("Recurring expenses added successfully")
         #sending different dictionaries to write to different csv
         transaction_manipulation.add_expense(expense_dict)
         recurring_manipulation.add_recurring(transaction_dict)
-        analytics.calculate_account_balance(transaction_dict['bank_account_id'], overwrite=True)
+        #!analytics.calculate_account_balance(transaction_dict['bank_account_id'], overwrite=True)
 
     #update a recurring expense
     if user_input_recurring == 3:
@@ -419,7 +420,7 @@ def recurring_expenses():
         print("Successfully updated expenses")
 
         #update the bank account balance
-        analytics.calculate_account_balance(selected_recurring['bank_account_id'], overwrite=True)
+        #!analytics.calculate_account_balance(selected_recurring['bank_account_id'], overwrite=True)
     
     if user_input_recurring == 4:
         print("Here are all the recurring expenses")

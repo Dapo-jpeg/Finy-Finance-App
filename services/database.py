@@ -126,7 +126,21 @@ def fetch_one_recurring_expense():
     pass
 
 def fetch_many_recurring_expenses():
-    pass
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    query = "SELECT * FROM recurring_expenses"
+    try:
+        rows = cursor.execute(query).fetchall()
+        connection.commit()
+
+        column_names = [description[0] for description in cursor.description]
+        result_dict = [dict(zip(column_names, row)) for row in rows]
+        return result_dict
+    except Exception as e:
+        print(e)
+    finally:
+        connection.close()
 
 #----------------------------------------------
 
@@ -162,8 +176,19 @@ def insert_many_transactions():
     #* will do later as a feature
     pass 
 
-def insert_recurring_expense():
-    pass
+def insert_recurring_expense(values):
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    query = "INSERT INTO recurring_expenses VALUES (:id, :name, :date, :type, :category, :amount, :frequency, :note, :bank_account_id)"
+
+    try:
+        cursor.execute(query, (values))
+        connection.commit()
+    except Exception as e :
+        print(e)
+    finally:
+        connection.close()
 
 def insert_many_recurring_expenses():
     #* will do later as a feature
@@ -198,8 +223,19 @@ def update_transaction(values):
     finally:
         connection.close()
 
-def update_recurring_expense():
-    pass
+def update_recurring_expense(values):
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    query = "UPDATE recurring_expenses SET name=:name, date= :date, type= :type, category= :category, amount= :amount, frequency= :frequency, note= :note, bank_account_id= :bank_account_id WHERE id= :id"
+
+    try:
+        cursor.execute(query, (values))
+        connection.commit()
+    except Exception as e:
+        print(e)
+    finally:
+        connection.close()
 
 #------------------------------------------------
 
@@ -232,5 +268,16 @@ def delete_transaction(transaction_id):
     finally:
         connection.close()
 
-def delete_recurring_expense():
-    pass
+def delete_recurring_expense(recurring_expense_id):
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    query= "DELETE FROM recurring_expenses WHERE id = ?"
+
+    try: 
+        cursor.execute(query, (recurring_expense_id,))
+        connection.commit()
+    except Exception as e:
+        print(e)
+    finally:
+        connection.close()
