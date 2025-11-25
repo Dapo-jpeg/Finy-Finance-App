@@ -62,8 +62,7 @@ def user_input_income():
             break
         try:
             for index, account in enumerate(account_list):
-                #!Change starting_balance back to balance
-                print(f"{index + 1}. {account['name']} | {account['starting_balance']}")
+                print(f"{index + 1}. {account['name']} | {account['balance']}")
                 continue
 
             user_input_account = int(input("Which account do you want to use\n"))
@@ -181,7 +180,7 @@ def change_transaction_info():
     transaction_manipulation.update_transaction(selected_transaction['id'], field_to_change, new_value)
 
     #Updating the bank account balance
-    #!analytics.calculate_account_balance(selected_transaction['bank_account_id'], overwrite=True)
+    analytics.calculate_account_balance(selected_transaction['bank_account_id'])
 
 def remove_transaction():
     print("Here are all your transactions")
@@ -211,7 +210,7 @@ def remove_transaction():
         print("Confirmation not recognized... Action cancelled")
 
     #Updating the bank account balance
-    #!analytics.calculate_account_balance(selected_transaction['bank_account_id'], overwrite=True)
+    analytics.calculate_account_balance(selected_transaction['bank_account_id'], overwrite=True)
 
 
 
@@ -244,11 +243,10 @@ def bank_account_manipulation():
     #if user picks 1 show all bank account info
     if user_input_number == 1:
         accounts = account_manipulation.print_all_account()
-        #!Fix bug = add column balance to bank_accounts table
         print("ID | Account name | Currency | Balance")
         print("--------------------------------------")
         for index, account in enumerate(accounts):
-            print(f"{index +1}. {account['name']} | {account['currency']} | {account['account_type']}")
+            print(f"{index +1}. {account['name']} | {account['currency']} | {account['balance']}")
 
     #if user picks 2 call add bank account function in account manipulation 
     elif user_input_number == 2:
@@ -325,7 +323,7 @@ def bank_account_manipulation():
         print("Account details successfully updated")
 
         #Update the bank account balance
-        #!analytics.calculate_account_balance(selected_account["bank_account_id"], overwrite=True)
+        analytics.calculate_account_balance(selected_account["bank_account_id"])
     
     elif user_input_number == 4:
         print("Here are all your accounts")
@@ -352,7 +350,7 @@ def bank_account_manipulation():
         print("Account successfully deleted")
 
         #Update the bank account balance
-        #!analytics.calculate_account_balance(selected_account["bank_account_id"], overwrite=True)
+        analytics.calculate_account_balance(selected_account["bank_account_id"])
 
     elif ValueError:
         print("Please type a number between 1 and 4")
@@ -397,7 +395,7 @@ def recurring_expenses():
         #sending different dictionaries to write to different csv
         transaction_manipulation.add_expense(expense_dict)
         recurring_manipulation.add_recurring(transaction_dict)
-        #!analytics.calculate_account_balance(transaction_dict['bank_account_id'], overwrite=True)
+        analytics.calculate_account_balance(transaction_dict['bank_account_id'])
 
     #update a recurring expense
     if user_input_recurring == 3:
@@ -420,7 +418,7 @@ def recurring_expenses():
         print("Successfully updated expenses")
 
         #update the bank account balance
-        #!analytics.calculate_account_balance(selected_recurring['bank_account_id'], overwrite=True)
+        analytics.calculate_account_balance(selected_recurring['bank_account_id'])
     
     if user_input_recurring == 4:
         print("Here are all the recurring expenses")
@@ -461,7 +459,7 @@ def start():
                 transaction_manipulation.add_income(transactions_dict)
                 print("Added transaction successfully")
                 #Recalculate balance for only that account and rewrites 
-                #!analytics.calculate_account_balance(transactions_dict['bank_account_id'], overwrite=True)
+                analytics.calculate_account_balance(transactions_dict['bank_account_id'])
                 break
             elif user_input == 2:
                 #Transaction dict = to the transaction that was returned in user_input_expense function
@@ -470,7 +468,7 @@ def start():
                 transaction_manipulation.add_expense(transactions_dict)
                 print("Added transaction successfully")
                 #Recalculate balance for only that account and rewrites 
-                #!analytics.calculate_account_balance(transactions_dict['bank_account_id'], overwrite=True)
+                analytics.calculate_account_balance(transactions_dict['bank_account_id'])
                 break
             elif user_input == 3:
                 change_transaction_info()

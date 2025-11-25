@@ -276,3 +276,20 @@ def delete_recurring_expense(recurring_expense_id):
         print(e)
     finally:
         connection.close()
+
+#------------------------------------------------
+
+#Update the balances
+def update_bank_balance(bank_account_id, net_balance):
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    query = "UPDATE bank_accounts SET balance = ? WHERE bank_account_id = ? "
+
+    try:
+        cursor.execute(query, (net_balance, bank_account_id))
+        connection.commit()
+    except Exception as e:
+        print(e)
+    finally:
+        connection.close()

@@ -1,10 +1,10 @@
 from services import database
 
 #calculate bank balance 
-def calculate_account_balance(bank_account_id, overwrite=False):
+def calculate_account_balance(bank_account_id):
     #read all accounts and transactions
-    transactions = database.read_data()
-    accounts = database.read_bank_account()
+    transactions = database.fetch_many_transactions()
+    accounts = database.fetch_many_bank_accounts()
 
     #say there are no account if no accounts found
     if not accounts or len(accounts) == 0 :
@@ -42,37 +42,23 @@ def calculate_account_balance(bank_account_id, overwrite=False):
     #balance = income sum - expense sum + starting balance
     net_balance = starting_balance + (income_sum - expense_sum)
 
-    #Rewrite if update is set 
-    if overwrite:
-        account["balance"] = net_balance
-        database.write_bank_account(accounts, overwrite=True)
-    else:
-        return(net_balance)
+    database.update_bank_balance(bank_account_id, net_balance)
 
 #function to calculate all the bank account balances
 def update_all_account_balance():
     #Read all accounts
-    all_accounts = database.read_bank_account()
+    all_accounts = database.fetch_many_bank_accounts()
 
     #check if there are any accounts 
     if not all_accounts or len(all_accounts) == 0:
         print("There are no bank accounts")
         return
-    
-    #Creating list to add all accounts to
-    updated_accounts = []
 
     #iterate and calculate the balance of each bank account
     for each_account in all_accounts:
         bank_account_id = each_account["bank_account_id"]
         new_balance = calculate_account_balance(bank_account_id)
 
-        #Add the recently calculated account to the list
-        each_account['balance'] = str(new_balance)
-        updated_accounts.append(each_account)
-
-    #Write the whole new list to the csv file
-    calculate_account_balance(bank_account_id, overwrite=True)
 
 #function showing bank account balance
 def show_bank_balance():
