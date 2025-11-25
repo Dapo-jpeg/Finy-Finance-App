@@ -80,7 +80,7 @@ def show_bank_balance():
     update_all_account_balance()
     
     #read all accounts and store them in accounts
-    accounts = database.read_bank_account()
+    accounts = database.fetch_many_bank_accounts()
 
     #if account empty tell user there are no accounts
     if not accounts:
@@ -98,7 +98,7 @@ def show_all_account_info():
     update_all_account_balance()
     
     #read all accounts and store them in accounts
-    accounts = database.read_bank_account()
+    accounts = database.fetch_many_bank_accounts()
 
     #if account empty tell user there are no accounts
     if not accounts:

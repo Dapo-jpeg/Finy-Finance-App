@@ -241,7 +241,12 @@ def bank_account_manipulation():
 
     #if user picks 1 show all bank account info
     if user_input_number == 1:
-        analytics.show_all_account_info()
+        accounts = account_manipulation.print_all_account()
+        #!Fix bug = add column balance to bank_accounts table
+        print("ID | Account name | Currency | Balance")
+        print("--------------------------------------")
+        for index, account in enumerate(accounts):
+            print(f"{index +1}. {account['name']} | {account['currency']} | {account['account_type']}")
 
     #if user picks 2 call add bank account function in account manipulation 
     elif user_input_number == 2:
@@ -318,7 +323,7 @@ def bank_account_manipulation():
         print("Account details successfully updated")
 
         #Update the bank account balance
-        analytics.calculate_account_balance(selected_account["bank_account_id"], overwrite=True)
+        #!analytics.calculate_account_balance(selected_account["bank_account_id"], overwrite=True)
     
     elif user_input_number == 4:
         print("Here are all your accounts")
@@ -345,7 +350,7 @@ def bank_account_manipulation():
         print("Account successfully deleted")
 
         #Update the bank account balance
-        analytics.calculate_account_balance(selected_account["bank_account_id"], overwrite=True)
+        #!analytics.calculate_account_balance(selected_account["bank_account_id"], overwrite=True)
 
     elif ValueError:
         print("Please type a number between 1 and 4")

@@ -4,7 +4,7 @@ import uuid
 
 #Function to print all bank account data for updating
 def print_all_account():
-    return database.read_bank_account()
+    return database.fetch_many_bank_accounts()
 
 # function for adding an account to csv
 def add_bank_account(account_input):
@@ -24,11 +24,11 @@ def add_bank_account(account_input):
         "bank_account_id": account_object.bank_account_id
     }
     #pass data to database.py
-    database.write_bank_account(account_input_data)
+    database.insert_bank_account(account_input_data)
 
 #function for updating account.csv
 def update_account(bank_account_id, field_to_change, new_value):
-    accounts = database.read_bank_account()
+    accounts = database.fetch_many_bank_accounts()
 
     for account in accounts:
         if account['bank_account_id'] == bank_account_id:
@@ -44,24 +44,15 @@ def update_account(bank_account_id, field_to_change, new_value):
                     return
             
             account[field_to_change] = new_value
+            database.update_bank_account(account)
             break
-    database.write_bank_account(accounts, overwrite=True)
 
 #function for removing account.csv
 def remove_account(bank_account_id):
-    accounts = database.read_bank_account()
+    accounts = database.fetch_many_bank_accounts()
 
     for account in accounts:
         if account['bank_account_id'] == bank_account_id:
             print("Account confirmed, deleteing...")
 
-    updated_accounts = []
-    for account in accounts:
-        if account['bank_account_id'] != bank_account_id:
-            updated_accounts.append(account)
-
-    if len(updated_accounts) == len(accounts):
-        print("No account was found with that ID")
-        return
-    
-    database.write_bank_account(updated_accounts, overwrite=True)
+    database.delete_bank_account(bank_account_id)
