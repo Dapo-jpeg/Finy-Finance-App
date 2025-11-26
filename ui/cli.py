@@ -3,6 +3,8 @@ from services import transaction_manipulation
 from services import account_manipulation
 from services import analytics
 from services import recurring_manipulation
+from datetime import datetime
+import schedule
 
 #main menu function to print
 def main_menu():
@@ -18,7 +20,8 @@ def main_menu():
     print("9. Show income sources percentage")
     print("10. Monthly Summary")
     print("11. Budgeting")
-
+#! I need to improve and clean up the code on ui. I need to loop through the start 
+#!and also loop through each input allowing the user to pick
 #function to print the categories so they know what to pick
 def income_category_menu():
     print("""Which category is it?
@@ -31,7 +34,17 @@ def income_category_menu():
 def user_input_income():
     transactions={}
     #Asking for date input
-    transactions["date"] = input("What date is it?(yyyy/mm/dd)\n")
+    date_input = input("What date is it?(yyyy/mm/dd)\n")
+    date_format = "%Y/%m/%d"
+    try:
+        #converting date string and date format into actual time
+        user_date = datetime.strptime(date_input, date_format)
+        #assigning only the date and not the time to the dictonary
+        transactions["date"] = datetime.date(user_date)
+        print(f"You entered: {user_date.strftime('%Y-%m-%d')}")
+    except:
+        print("Invalid date format. Please use YYYY/MM/DD")
+    
     #Assigining Type income automatically
     transactions["type"] = "income"
     #Making loop to ask for valid input for picking category
@@ -104,7 +117,16 @@ def expense_category_menu():
 def user_input_expense():
     transactions={}
     #Asking for date input
-    transactions["date"] = input("What date is it?(yyyy/mm/dd)\n")
+    date_input = input("What date is it?(yyyy/mm/dd)\n")
+    date_format = "%Y/%m/%d"
+    try:
+        #converting date string and date format into actual time
+        user_date = datetime.strptime(date_input, date_format)
+        #assigning only the date and not the time to the dictonary
+        transactions["date"] = datetime.date(user_date)
+        print(f"You entered: {user_date.strftime('%Y-%m-%d')}")
+    except:
+        print("Invalid date format. Please use YYYY/MM/DD")
     #Assigning type to expense automatically
     transactions["type"] = "expense"
 
@@ -173,8 +195,22 @@ def change_transaction_info():
     print("What field do you want to change (date/category/amount/note)")
     field_to_change = input("Field name: ").lower()
 
-    #Ask what the new value they want to change it to 
-    new_value = input("Enter new value: ")
+    #!Continue the conditional and do it for category and amount 
+    if field_to_change == "date":
+        #Asking for date input
+        date_input = input("What date do you want to change to?(yyyy/mm/dd)\n")
+        date_format = "%Y/%m/%d"
+        try:
+            #converting date string and date format into actual time
+            user_date = datetime.strptime(date_input, date_format)
+            #assigning only the date and not the time to the dictonary
+            new_value = datetime.date(user_date)
+            print(f"You entered: {user_date.strftime('%Y-%m-%d')}")
+        except:
+            print("Invalid date format. Please use YYYY/MM/DD")
+    else:
+        #Ask what the new value they want to change it to 
+        new_value = input("Enter new value: ")
 
     #Sending all the collected informatino for transaction_manipulation to handle. 
     transaction_manipulation.update_transaction(selected_transaction['id'], field_to_change, new_value)
@@ -210,7 +246,7 @@ def remove_transaction():
         print("Confirmation not recognized... Action cancelled")
 
     #Updating the bank account balance
-    analytics.calculate_account_balance(selected_transaction['bank_account_id'], overwrite=True)
+    analytics.calculate_account_balance(selected_transaction['bank_account_id'])
 
 
 
@@ -370,10 +406,10 @@ def recurring_expenses():
 
     if user_input_recurring <=0 or user_input_recurring > 4:
         print("Please type a number between 1-4")
-
+    #-------------------------------------------------------
     if user_input_recurring == 1:
         recurring_manipulation.show_recurring_expenses()
-
+    #----------------------------------------------------------
     if user_input_recurring == 2:
         #calling expense function
         transaction_dict = user_input_expense()
@@ -396,7 +432,7 @@ def recurring_expenses():
         transaction_manipulation.add_expense(expense_dict)
         recurring_manipulation.add_recurring(transaction_dict)
         analytics.calculate_account_balance(transaction_dict['bank_account_id'])
-
+    #---------------------------------------------------------
     #update a recurring expense
     if user_input_recurring == 3:
         print("Here are all the recurring expenses")
@@ -410,7 +446,22 @@ def recurring_expenses():
         print("What field do you want to change (name, date, amount, frequency, category, note)")
         field_to_change = input("Field name: ").lower()
 
-        new_value = input("Enter new value: ")
+        #!Continue the conditional and do it for category and amount 
+        if field_to_change == "date":
+            #Asking for date input
+            date_input = input("What date do you want to change to?(yyyy/mm/dd)\n")
+            date_format = "%Y/%m/%d"
+            try:
+                #converting date string and date format into actual time
+                user_date = datetime.strptime(date_input, date_format)
+                #assigning only the date and not the time to the dictonary
+                new_value = datetime.date(user_date)
+                print(f"You entered: {user_date.strftime('%Y-%m-%d')}")
+            except:
+                print("Invalid date format. Please use YYYY/MM/DD")
+        else:
+            #Ask what the new value they want to change it to 
+            new_value = input("Enter new value: ")
 
         #sending all info to recurring_manipulation to handle
         recurring_manipulation.update_recurring_expenses(selected_recurring["id"], field_to_change, new_value)
@@ -419,7 +470,7 @@ def recurring_expenses():
 
         #update the bank account balance
         analytics.calculate_account_balance(selected_recurring['bank_account_id'])
-    
+    #------------------------------------------------------------------------------------------------------------
     if user_input_recurring == 4:
         print("Here are all the recurring expenses")
         recurring_list = recurring_manipulation.show_recurring_expenses()
@@ -440,11 +491,13 @@ def recurring_expenses():
         else :
             ValueError
             print ("Confirmation not recognized... Action cancelled")
+schedule.every()
 #! I have to make another function that constantly checks the date so it can call up the recurring expense again (I will do this after switching my database to SQL)
 
 def start():
-    while True:  
+    while True: 
         try: 
+            schedule.run_pending()
             main_menu()
             user_input = int(input("Pick a number please\n"))
 

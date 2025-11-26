@@ -2,6 +2,8 @@
 from services import database
 from models import transaction
 import uuid 
+import datetime
+import schedule
 
 
 # Function for reading all recurring expenses
@@ -12,7 +14,7 @@ def show_recurring_expenses():
         print("There are no recurring expenses")
         return
 
-    print("Name | Amount | Category | Frequency | Date Paid ")
+    print("Name | Amount | Category | Frequency | Bank Account | Date paid ")
     print("--------------------------------------")
     for index, expense in enumerate(recurring_expenses):
         print(f"{index + 1}. {expense['name']} | {expense['amount']} | {expense['category']} | {expense['frequency']} | {expense['date']}")
@@ -79,3 +81,40 @@ def remove_recurring_expense(expense_id):
     
     # sending it to be rewritten
     database.delete_recurring_expense(expense_id)
+
+def automate_recurring_expense():
+    recurring_expenses = database.fetch_many_recurring_expenses()
+
+    today_date = datetime.date.today()
+    for recurring_expense in recurring_expenses:
+        expense = {}
+        expense["date"] = today_date
+        expense["type"] = recurring_expense["type"]
+        expense["category"] = recurring_expense ["type"]
+        expense["amount"] = recurring_expense["amount"]
+        expense["note"] = recurring_expense["note"]
+        expense["bank_account_id"] = recurring_expense["bank_account_id"]
+        if recurring_expense["frequency"] == "daily":
+            schedule.every().day.do (database.insert_many_transactions(expense))
+
+        elif recurring_expense["frequency"] == "weekly":
+            schedule.every().week.do (database.insert_many_transactions(expense))
+
+        elif recurring_expense["frequency"] == "monthly":
+            schedule.every().month.do (database.insert_many_transactions(expense))
+        
+        elif recurring_expense["frequency"] == "yearly":
+            schedule.every().year (database.insert_many_transactions(expense))
+
+        if recurring_expense["date"] == today_date: #! Wont work the same month and day but not same year or vice versa
+            expense = {}
+            expense["date"] = today_date
+            expense["type"] = recurring_expense["type"]
+            expense["category"] = recurring_expense ["type"]
+            expense["amount"] = recurring_expense["amount"]
+            expense["note"] = recurring_expense["note"]
+            expense["bank_account_id"] = recurring_expense["bank_account_id"]
+            database.insert_many_transactions(expense)
+
+
+    pass
