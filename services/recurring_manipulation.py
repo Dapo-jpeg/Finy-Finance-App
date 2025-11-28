@@ -17,7 +17,7 @@ def show_recurring_expenses():
     print("Name | Amount | Category | Frequency | Bank Account | Last date paid | Next pay date ")
     print("--------------------------------------")
     for index, expense in enumerate(recurring_expenses):
-        print(f"{index + 1}. {expense['name']} | {expense['amount']} | {expense['category']} | {expense['frequency']} | {expense['last_date_paid']} | {expense['next_pay_date']}")
+        print(f"{index + 1}. {expense['recurring_expense_name']} | {expense['amount']} | {expense['category']} | {expense['frequency']} | {expense["bank_account_name"]} | {expense['last_date_paid']} | {expense['next_pay_date']}")
     #! I need to fix the expense['bank_account_id'] above by joining the tables using SQL
     return recurring_expenses
 
