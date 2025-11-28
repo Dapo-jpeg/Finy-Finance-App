@@ -175,7 +175,7 @@ def insert_recurring_expense(values):
     connection = get_connection()
     cursor = connection.cursor()
 
-    query = "INSERT INTO recurring_expenses VALUES (:id, :name, :date, :type, :category, :amount, :frequency, :note, :bank_account_id)"
+    query = "INSERT INTO recurring_expenses VALUES (:id, :name, :last_date_paid, :type, :category, :amount, :frequency, :note, :bank_account_id, :next_pay_date)"
 
     try:
         cursor.execute(query, (values))
@@ -222,7 +222,7 @@ def update_recurring_expense(values):
     connection = get_connection()
     cursor = connection.cursor()
 
-    query = "UPDATE recurring_expenses SET name=:name, date= :date, type= :type, category= :category, amount= :amount, frequency= :frequency, note= :note, bank_account_id= :bank_account_id WHERE id= :id"
+    query = "UPDATE recurring_expenses SET name=:name, last_date_paid= :last_date_paid, type= :type, category= :category, amount= :amount, frequency= :frequency, note= :note, bank_account_id= :bank_account_id, next_pay_date = :next_pay_date WHERE id= :id"
 
     try:
         cursor.execute(query, (values))
@@ -288,6 +288,20 @@ def update_bank_balance(bank_account_id, net_balance):
 
     try:
         cursor.execute(query, (net_balance, bank_account_id))
+        connection.commit()
+    except Exception as e:
+        print(e)
+    finally:
+        connection.close()
+
+def update_last_date_paid():
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    query = ""
+
+    try:
+        cursor.execute(query)
         connection.commit()
     except Exception as e:
         print(e)

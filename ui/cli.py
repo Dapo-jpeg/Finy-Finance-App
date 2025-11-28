@@ -3,8 +3,8 @@ from services import transaction_manipulation
 from services import account_manipulation
 from services import analytics
 from services import recurring_manipulation
+from services import automate_recurring_expenses
 from datetime import datetime
-import schedule
 
 #main menu function to print
 def main_menu():
@@ -413,6 +413,7 @@ def recurring_expenses():
     if user_input_recurring == 2:
         #calling expense function
         transaction_dict = user_input_expense()
+        #! changing date to last date paid
         #duplicating dictionary and removing frequency part
         expense_dict = transaction_dict.copy()
 
@@ -426,11 +427,17 @@ def recurring_expenses():
                 print("Please type a valid input (daily, weekly, monthly, yearly) \n")
             else: 
                 break
-        
+        transaction_dict["next_pay_date"] = None
+
         print("Recurring expenses added successfully")
         #sending different dictionaries to write to different csv
-        transaction_manipulation.add_expense(expense_dict)
+
+        # changing date to last date paid
+        transaction_dict["last_date_paid"] = transaction_dict["date"] 
+        del transaction_dict["date"]
+
         recurring_manipulation.add_recurring(transaction_dict)
+        automate_recurring_expenses.automate_recurring_expense()
         analytics.calculate_account_balance(transaction_dict['bank_account_id'])
     #---------------------------------------------------------
     #update a recurring expense
@@ -448,6 +455,7 @@ def recurring_expenses():
 
         #!Continue the conditional and do it for category and amount 
         if field_to_change == "date":
+            field_to_change = "last_date_paid"
             #Asking for date input
             date_input = input("What date do you want to change to?(yyyy/mm/dd)\n")
             date_format = "%Y/%m/%d"
@@ -480,7 +488,7 @@ def recurring_expenses():
 
         selected_recurring = recurring_list[selected_number - 1]
 
-        user_confirmation = input(f"Are you sure you want to delete ({selected_recurring["name"]} | {selected_recurring["date"]} | {selected_recurring["category"]} | {selected_recurring["frequency"]} | {selected_recurring["amount"]} | {selected_recurring['note']})? (yes/no) \n").lower()
+        user_confirmation = input(f"Are you sure you want to delete ({selected_recurring["name"]} | {selected_recurring["last_date_paid"]} | {selected_recurring["category"]} | {selected_recurring["frequency"]} | {selected_recurring["amount"]} | {selected_recurring['note']})? (yes/no) \n").lower()
 
         if user_confirmation == "yes":
             # Send data to recurring manipulation
@@ -491,18 +499,17 @@ def recurring_expenses():
         else :
             ValueError
             print ("Confirmation not recognized... Action cancelled")
-schedule.every()
 #! I have to make another function that constantly checks the date so it can call up the recurring expense again (I will do this after switching my database to SQL)
 
 def start():
     while True: 
         try: 
-            schedule.run_pending()
+            automate_recurring_expenses.automate_recurring_expense()
             main_menu()
             user_input = int(input("Pick a number please\n"))
-
+            
             if user_input <=0 or user_input> 11:
-                print("Please pick a number between 1 - 10")
+                print("Please pick a number between 1 - 11")
                 continue
             
             if user_input == 1:

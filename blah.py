@@ -1,22 +1,13 @@
-import sqlite3
+import datetime
 
-# Sample data (replace with your actual database connection and query)
-conn = sqlite3.connect(':memory:')
-cursor = conn.cursor()
-cursor.execute("CREATE TABLE users (id INTEGER, name TEXT, email TEXT)")
-cursor.execute("INSERT INTO users VALUES (1, 'Alice', 'alice@example.com')")
-cursor.execute("INSERT INTO users VALUES (2, 'Bob', 'bob@example.com')")
-conn.commit()
+# Starting date
+start_date = datetime.date.today() # October 26, 2025, 10:00:00
 
-cursor.execute("SELECT id, name, email FROM users")
-rows = cursor.fetchall()
+# Interval to add (e.g., 5 days, 3 hours, 15 minutes)
+time_to_add = datetime.timedelta(days=5)
 
-# Get column names from cursor.description
-column_names = [description[0] for description in cursor.description]
+# Calculate the new date and time
+end_date = start_date + time_to_add
 
-# Convert list of tuples to list of dictionaries
-result_dicts = [dict(zip(column_names, row)) for row in rows]
-
-print(result_dicts)
-
-conn.close()
+print(f"Original date and time: {start_date}")
+print(f"New date and time: {end_date}")

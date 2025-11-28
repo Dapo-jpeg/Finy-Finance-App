@@ -35,7 +35,9 @@ class income_transaction(transaction):
         self.type = "income"
 
 class recurring_transaction(transaction):
-    def __init__(self, name, date, type, category, amount, frequency,  note, bank_account_id, id):
-        super().__init__(date, type, category, amount, note, bank_account_id, id)
+    def __init__(self, name, last_date_paid, type, category, amount, frequency,  note, bank_account_id, id, next_pay_date):
+        super().__init__( last_date_paid, type, category, amount, note, bank_account_id, id)
         self.name = name
         self.frequency = frequency
+        self.last_date_paid = last_date_paid
+        self.next_pay_date = next_pay_date
