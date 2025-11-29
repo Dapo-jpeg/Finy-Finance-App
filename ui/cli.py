@@ -195,7 +195,6 @@ def change_transaction_info():
     print("What field do you want to change (date/category/amount/note)")
     field_to_change = input("Field name: ").lower()
 
-    #!Continue the conditional and do it for category and amount 
     if field_to_change == "date":
         #Asking for date input
         date_input = input("What date do you want to change to?(yyyy/mm/dd)\n")
@@ -208,6 +207,32 @@ def change_transaction_info():
             print(f"You entered: {user_date.strftime('%Y-%m-%d')}")
         except:
             print("Invalid date format. Please use YYYY/MM/DD")
+    
+    elif field_to_change == "category":
+        while True:
+            if selected_transaction["type"] == "expense":
+                expense_category_menu()
+                categories = {1:"Food", 2:"Transportation", 3:"Communication", 4:"Housing", 5:"Personal Care", 6:"Health and Wellness", 7:"Education", 8:"Entertainment", 9:"Debt payments", 10:"Pets", 11:"Others"}
+                category_number = int(input("Enter new value:"))
+                new_value = categories[category_number]
+                if category_number in categories:
+                    break
+                elif ValueError:
+                    print("Invalid Input, try again")
+
+            elif selected_transaction["type"] == "income":
+                income_category_menu()
+                categories = {
+                1:"Earned income (salary, wages, commision, etc)",
+                2:"Investment income (stocks, bonds, crypto, etc)",
+                3:"Passive income(digital products, rentals, royalties, etc)", 
+                4:"Others"}
+                category_number = int(input("Enter new value:"))
+                new_value = categories[category_number]
+                if category_number in categories:
+                    break
+                elif ValueError:
+                    print("Invalid input, try again")
     else:
         #Ask what the new value they want to change it to 
         new_value = input("Enter new value: ")
@@ -413,7 +438,6 @@ def recurring_expenses():
     if user_input_recurring == 2:
         #calling expense function
         transaction_dict = user_input_expense()
-        #! changing date to last date paid
         #duplicating dictionary and removing frequency part
         expense_dict = transaction_dict.copy()
 
@@ -453,7 +477,6 @@ def recurring_expenses():
         print("What field do you want to change (name, date, amount, frequency, category, note)")
         field_to_change = input("Field name: ").lower()
 
-        #!Continue the conditional and do it for category and amount 
         if field_to_change == "date":
             field_to_change = "last_date_paid"
             #Asking for date input
