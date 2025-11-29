@@ -9,14 +9,14 @@ import schedule
 # Function for reading all recurring expenses
 def show_recurring_expenses():
     recurring_expenses = database.fetch_many_recurring_expenses()
-
+    recurring_display = database.fetch_to_show_all_recurring_expenses()
     if not recurring_expenses:
         print("There are no recurring expenses")
         return
 
     print("Name | Amount | Category | Frequency | Bank Account | Last date paid | Next pay date ")
     print("--------------------------------------")
-    for index, expense in enumerate(recurring_expenses):
+    for index, expense in enumerate(recurring_display):
         print(f"{index + 1}. {expense['recurring_expense_name']} | {expense['amount']} | {expense['category']} | {expense['frequency']} | {expense["bank_account_name"]} | {expense['last_date_paid']} | {expense['next_pay_date']}")
     #! I need to fix the expense['bank_account_id'] above by joining the tables using SQL
     return recurring_expenses
@@ -63,7 +63,7 @@ def update_recurring_expenses(expense_id, field_to_change, new_value):
                 if int(new_value) <= 0:
                     print("Invalid value. Amount must be greater than 0")
                     return
-
+            
             #update expense
             expense[field_to_change] = new_value
             database.update_recurring_expense(expense)

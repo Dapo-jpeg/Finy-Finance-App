@@ -467,6 +467,40 @@ def recurring_expenses():
                 print(f"You entered: {user_date.strftime('%Y-%m-%d')}")
             except:
                 print("Invalid date format. Please use YYYY/MM/DD")
+
+        elif field_to_change == "category":
+            while True:
+                if selected_recurring["type"] == "expense":
+                    expense_category_menu()
+                    categories = {1:"Food", 2:"Transportation", 3:"Communication", 4:"Housing", 5:"Personal Care", 6:"Health and Wellness", 7:"Education", 8:"Entertainment", 9:"Debt payments", 10:"Pets", 11:"Others"}
+                    category_number = int(input("Enter new value:"))
+                    new_value = categories[category_number]
+                    if category_number in categories:
+                        break
+                    elif ValueError:
+                        print("Invalid Input, try again")
+                elif selected_recurring["type"] == "income":
+                    income_category_menu()
+                    categories = {
+                    1:"Earned income (salary, wages, commision, etc)",
+                    2:"Investment income (stocks, bonds, crypto, etc)",
+                    3:"Passive income(digital products, rentals, royalties, etc)", 
+                    4:"Others"}
+                    category_number = int(input("Enter new value:"))
+                    new_value = categories[category_number]
+                    if category_number in categories:
+                        break
+                    elif ValueError:
+                        print("Invalid input, try again")
+
+        elif field_to_change == "frequency":
+            print("Pick one - daily, weekly, monthly, yearly")
+            while True:
+                new_value = input("Enter new value: ").lower()
+                if new_value == "daily" or "weekly" or "monthly" or "yearly":
+                    break
+                elif ValueError:
+                    print("Invalid input, try again.")
         else:
             #Ask what the new value they want to change it to 
             new_value = input("Enter new value: ")
@@ -499,7 +533,6 @@ def recurring_expenses():
         else :
             ValueError
             print ("Confirmation not recognized... Action cancelled")
-#! I have to make another function that constantly checks the date so it can call up the recurring expense again (I will do this after switching my database to SQL)
 
 def start():
     while True: 

@@ -124,7 +124,24 @@ def fetch_many_recurring_expenses():
     connection = get_connection()
     cursor = connection.cursor()
 
-    query = """SELECT recurring_expenses.name AS recurring_expense_name, amount, category, frequency, bank_accounts.name AS bank_account_name, last_date_paid, next_pay_date FROM recurring_expenses
+    query = "SELECT * FROM recurring_expenses"
+    try:
+        rows = cursor.execute(query).fetchall()
+        connection.commit()
+
+        column_names = [description[0] for description in cursor.description]
+        result_dict = [dict(zip(column_names, row)) for row in rows]
+        return result_dict
+    except Exception as e:
+        print(e)
+    finally:
+        connection.close()
+
+def fetch_to_show_all_recurring_expenses():
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    query = """SELECT id, recurring_expenses.name AS recurring_expense_name, amount, category, frequency, bank_accounts.name AS bank_account_name, recurring_expenses.bank_account_id AS bank_account_id, last_date_paid, next_pay_date FROM recurring_expenses
             JOIN bank_accounts ON recurring_expenses.bank_account_id = bank_accounts.bank_account_id"""
     try:
         rows = cursor.execute(query).fetchall()
