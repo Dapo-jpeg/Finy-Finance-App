@@ -151,4 +151,7 @@ def month_income_and_expense(year, month):
 #function showing categorical incomes
 
 #function showing categorical expenses
+def categorical_expense(type, year, month):
+    categories = database.fetch_category(type, year, month)
 
+    return categories

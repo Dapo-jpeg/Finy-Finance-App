@@ -1,13 +1,8 @@
-import datetime
+import plotext as plt
+import numpy as np
 
-# Starting date
-start_date = datetime.date.today() # October 26, 2025, 10:00:00
-
-# Interval to add (e.g., 5 days, 3 hours, 15 minutes)
-time_to_add = datetime.timedelta(days=5)
-
-# Calculate the new date and time
-end_date = start_date + time_to_add
-
-print(f"Original date and time: {start_date}")
-print(f"New date and time: {end_date}")
+x = np.linspace(0, 2 * np.pi, 100)
+y = np.sin(x)
+plt.plot(x, y)
+plt.title("Sine Wave in CLI")
+plt.show()

@@ -572,9 +572,43 @@ def analytics_cli():
         if user_input <= 0 or user_input > 5:
             print("Invalid input, Please input a number between 1-5.")
         elif user_input == 1:
-            pass
+            while True:
+                try:
+                    year = input("Which year(eg:2025)\n")
+                    month = input("Which month number (1-12)\n")
+
+                    if int(month) <= 0 or  int(month) > 12: 
+                        print("Please type a number between 1-12")
+                    else:
+                        break
+                except ValueError:
+                    print("Invalid inpute. Please type a number")
+            type = 'expense'
+            categories = analytics.categorical_expense(type, year, month)
+
+            print("Category |  Money spent that month")
+            for index, category in enumerate(categories):
+                print(f"{index + 1}. {category['category']} ------------- {category['SUM(amount)']}")
+
         elif user_input == 2:
-            pass
+            while True:
+                try:
+                    year = input("Which year(eg:2025)\n")
+                    month = input("Which month number (1-12)\n")
+
+                    if int(month) <= 0 or  int(month) > 12: 
+                        print("Please type a number between 1-12")
+                    else:
+                        break
+                except ValueError:
+                    print("Invalid inpute. Please type a number")
+            type = 'income'
+            categories = analytics.categorical_expense(type, year, month)
+
+            print("Category |  Money spent that month")
+            for index, category in enumerate(categories):
+                print(f"{index + 1}. {category['category']} ------------- {category['SUM(amount)']}")
+
         elif user_input == 3:
             income_sum, expense_sum, net_balance = analytics.monthly_summary()
             print("-------------Last 30 days-------------")
@@ -583,9 +617,17 @@ def analytics_cli():
             print(f"Net balance:{net_balance}")
 
         elif user_input == 4:
-            year = input("Which year(eg:2025)\n")
-            month = input("Which month number (1-12)\n")
+            while True:
+                try:
+                    year = input("Which year(eg:2025)\n")
+                    month = input("Which month number (1-12)\n")
 
+                    if int(month) <=0 or  int(month) > 12: 
+                        print("Please type a number between 1-12")
+                    else:
+                        break
+                except ValueError:
+                    print("Invalid inpute. Please type a number")
             net_balance, income_sum, expense_sum= analytics.month_income_and_expense(year, month)
 
             print(f"------------------Month {month}/{year} income vs expense----------------")

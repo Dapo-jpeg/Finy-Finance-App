@@ -368,3 +368,23 @@ def fetch_month_transaction(year, month):
 
     finally:
         connection.close()
+
+def fetch_category(type, year, month):
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    query = "SELECT category, SUM(amount) FROM transactions WHERE type = ? AND strftime('%Y', date) = ?  AND strftime('%m', date) =? GROUP BY category ORDER BY SUM(amount) DESC"
+
+    try:
+        rows = cursor.execute(query,(type, year, month)).fetchall()
+        connection.commit()
+
+        column_names = [description[0] for description in cursor.description]
+        result_dict = [dict(zip(column_names, row)) for row in rows]
+
+        return(result_dict)
+    except Exception as e:
+        print(e)
+
+    finally:
+        connection.close()
