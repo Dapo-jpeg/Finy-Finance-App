@@ -59,6 +59,7 @@ def update_all_account_balance():
         bank_account_id = each_account["bank_account_id"]
         new_balance = calculate_account_balance(bank_account_id)
 
+#----------------------------------------------------------------
 
 #function showing bank account balance
 def show_bank_balance():
@@ -97,11 +98,7 @@ def show_all_account_info():
     for index, account in enumerate(accounts):
         print(f"{index + 1}. {account['name']} | {account['currency']} | {account['balance']} | {account['account_type']} | {account['starting_balance']} | {account['note']}")
 
-
-
-#function showing categorical incomes
-
-#function showing categorical expenses
+#----------------------------------------------------------------
 
 #function showing monthly summary 
     #shows income amount last month
@@ -109,3 +106,49 @@ def show_all_account_info():
     #shows profit and loss
     #cash flow
     #financial ratios
+
+def monthly_summary():
+    last_months_transactions = database.fetch_all_transaction_last_month()
+
+    #say there are no transactions found
+    if not last_months_transactions or len(last_months_transactions) == 0 :
+        print("There are no transactions with this bank account.")
+        return
+
+    #sum of all expense transactions and sum of all income transactions
+    expense_sum = 0
+    income_sum = 0
+    for transaction in last_months_transactions:
+        amount = float(transaction["amount"])
+        if transaction["type"] == "expense":
+            expense_sum += amount
+        elif transaction["type"] == "income":
+            income_sum += amount
+
+    #balance = income sum - expense sum + starting balance
+    net_balance = (income_sum - expense_sum)
+
+    return income_sum, expense_sum, net_balance
+
+def month_income_and_expense(year, month):
+    months_transactions = database.fetch_month_transaction(year, month)
+
+    #sum of all expense transactions and sum of all income transactions
+    expense_sum = 0
+    income_sum = 0
+    for transaction in months_transactions:
+        if transaction["type"] == "expense":
+            expense_sum  = transaction['SUM(amount)']
+        elif transaction["type"] == "income":
+            income_sum = transaction['SUM(amount)']
+
+    #balance = income sum - expense sum + starting balance
+    net_balance = (income_sum - expense_sum)
+
+    #return {"income_sum":income_sum, "expense_sum":expense_sum, "net_balance":net_balance}
+    return(net_balance, income_sum, expense_sum)
+
+#function showing categorical incomes
+
+#function showing categorical expenses
+

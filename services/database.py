@@ -325,3 +325,46 @@ def update_last_date_paid():
         print(e)
     finally:
         connection.close()
+
+#------------------------------------------------
+
+#analytics
+def fetch_all_transaction_last_month():
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    query = "SELECT id, type, category, amount, bank_account_id FROM transactions WHERE date >= DATETIME ('now','-30 day')"
+
+    try:
+        rows = cursor.execute(query).fetchall()
+        connection.commit()
+
+        column_names = [description[0] for description in cursor.description]
+        result_dict = [dict(zip(column_names, row)) for row in rows]
+        return result_dict
+
+    except Exception as e:
+        print(e)
+
+    finally:
+        connection.close()
+
+def fetch_month_transaction(year, month):
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    query = "SELECT type, SUM(amount) FROM transactions WHERE strftime('%Y', date) = ?  AND strftime('%m', date) =? GROUP BY type"
+
+    try:
+        rows = cursor.execute(query,(year, month)).fetchall()
+        connection.commit()
+
+        column_names = [description[0] for description in cursor.description]
+        result_dict = [dict(zip(column_names, row)) for row in rows]
+
+        return(result_dict)
+    except Exception as e:
+        print(e)
+
+    finally:
+        connection.close()

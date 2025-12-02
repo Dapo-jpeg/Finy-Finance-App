@@ -16,10 +16,7 @@ def main_menu():
     print("5. Show bank account balance")
     print("6. Bank account management")
     print("7. Recurring expenses")
-    print("8. Show spendings percentage")
-    print("9. Show income sources percentage")
-    print("10. Monthly Summary")
-    print("11. Budgeting")
+    print("8. Analytics")
 #! I need to improve and clean up the code on ui. I need to loop through the start 
 #!and also loop through each input allowing the user to pick
 #function to print the categories so they know what to pick
@@ -273,7 +270,7 @@ def remove_transaction():
     #Updating the bank account balance
     analytics.calculate_account_balance(selected_transaction['bank_account_id'])
 
-
+#-----------------------------------------------------------------------------------
 
 #function to show bank account balance only 
 def bank_account_balance():
@@ -416,6 +413,7 @@ def bank_account_manipulation():
     elif ValueError:
         print("Please type a number between 1 and 4")
 
+#----------------------------------------------------------------------------------------
 
 def recurring_expenses():
     print("Please pick an option")
@@ -557,6 +555,50 @@ def recurring_expenses():
             ValueError
             print ("Confirmation not recognized... Action cancelled")
 
+#----------------------------------------------------------------------------------------
+
+def analytics_menu():
+    print("----------Analytics Menu----------")
+    print("1. Categorical Spendings breakdown")
+    print("2. Income sources breakdown")
+    print("3. Last 30 days summary")
+    print("4. Specific Month income vs expense")
+    print("5. Budgeting")
+
+def analytics_cli():
+    analytics_menu()
+    user_input = int(input("Enter a number between 1-5: \n"))
+    try:
+        if user_input <= 0 or user_input > 5:
+            print("Invalid input, Please input a number between 1-5.")
+        elif user_input == 1:
+            pass
+        elif user_input == 2:
+            pass
+        elif user_input == 3:
+            income_sum, expense_sum, net_balance = analytics.monthly_summary()
+            print("-------------Last 30 days-------------")
+            print(f"Income:{income_sum}")
+            print(f"Expense:{expense_sum}")
+            print(f"Net balance:{net_balance}")
+
+        elif user_input == 4:
+            year = input("Which year(eg:2025)\n")
+            month = input("Which month number (1-12)\n")
+
+            net_balance, income_sum, expense_sum= analytics.month_income_and_expense(year, month)
+
+            print(f"------------------Month {month}/{year} income vs expense----------------")
+            print(f"Income: {income_sum}")
+            print(f"Income: {expense_sum}")
+            print(f"Income: {net_balance}")
+        elif user_input ==5:
+            pass
+    except ValueError:
+        print("Invalid input, please try again.")
+
+#----------------------------------------------------------------------------------------
+
 def start():
     while True: 
         try: 
@@ -564,8 +606,8 @@ def start():
             main_menu()
             user_input = int(input("Pick a number please\n"))
             
-            if user_input <=0 or user_input> 11:
-                print("Please pick a number between 1 - 11")
+            if user_input <=0 or user_input> 8:
+                print("Please pick a number between 1 - 8")
                 continue
             
             if user_input == 1:
@@ -604,7 +646,8 @@ def start():
                 recurring_expenses()
                 break
             elif user_input == 8:
-                pass
+                analytics_cli()
+                break
             elif user_input == 9:
                 pass
             elif user_input == 10:
